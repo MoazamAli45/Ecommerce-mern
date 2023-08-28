@@ -1,3 +1,5 @@
+// Every user has its own cart
+
 const mongoose = require("mongoose");
 const cartSchema = new mongoose.Schema({
   user: [
@@ -33,5 +35,5 @@ const cartSchema = new mongoose.Schema({
     default: 0,
   },
 });
-const cartModel = mongoose.model("cart", cartSchema);
-module.exports = cartModel;
+const Cart = mongoose.model("cart", cartSchema);
+module.exports = Cart;
