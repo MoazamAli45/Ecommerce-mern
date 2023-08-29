@@ -1,9 +1,9 @@
 const Rating = require("../Model/ratingModel");
 const Product = require("../Model/productModel");
 
-exports.createRating = async (reqData, user) => {
+exports.createRating = async (reqData, user, productId) => {
   try {
-    const product = await Product.findById(reqData.productId);
+    const product = await Product.findById(productId);
 
     const rating = new Rating({
       user: user._id,

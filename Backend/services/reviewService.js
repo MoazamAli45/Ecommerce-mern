@@ -1,9 +1,9 @@
 const Review = require("../Model/reviewModel");
 const Product = require("../Model/productModel");
 
-exports.createReview = async (reqData, user) => {
+exports.createReview = async (reqData, user, productId) => {
   try {
-    const product = await Product.findById(reqData.productId);
+    const product = await Product.findById(productId);
 
     const review = new Review({
       user: user._id,

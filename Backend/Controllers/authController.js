@@ -76,7 +76,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 
   if (!token) {
-    return next(new AppError("You are not logged in", 401));
+    return next(new AppError("You are not logged in", 404));
   }
 
   // Decoding Token
@@ -96,3 +96,17 @@ exports.protect = catchAsync(async (req, res, next) => {
   res.locals.user = currentUser;
   next();
 });
+
+//  AUthorization
+// wrapping as we can't pass value to middleware
+exports.restrictTo = (...roles) => {
+  // Due to closure it can access
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new AppError("You do not have permission to perform this action", 403)
+      );
+    }
+    next();
+  };
+};
