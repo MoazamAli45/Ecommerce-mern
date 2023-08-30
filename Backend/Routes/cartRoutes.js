@@ -7,3 +7,4 @@ router.use(authController.protect);
 
 router.get("/", cartController.getUserCart);
 router.post("/", cartController.addItemToCart);
+module.exports = router;

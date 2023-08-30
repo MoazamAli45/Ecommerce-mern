@@ -7,3 +7,4 @@ router.use(authController.protect);
 
 router.patch("/:productId", cartItemController.updateCartItem);
 router.delete("/:productId", cartItemController.removeCartItem);
+module.exports = router;

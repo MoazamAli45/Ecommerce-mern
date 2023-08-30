@@ -5,5 +5,10 @@ const reviewController = require("../Controllers/reviewController");
 
 router.use(authController.protect);
 
-router.post("/:productId", reviewController.addReview);
+router.post(
+  "/:productId",
+  authController.restrictTo("CUSTOMER"),
+  reviewController.addReview
+);
 router.get("/:productId", reviewController.getAllReviews);
+module.exports = router;

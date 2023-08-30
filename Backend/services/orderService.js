@@ -1,6 +1,6 @@
 const Address = require("../Model/addressModel");
 const Cart = require("../Model/cartModel");
-const OrderItem = require("../Model/oroderItemModel");
+const OrderItem = require("../Model/orderItemModel");
 const Order = require("../Model/orderModel");
 // Create Order
 exports.createOrder = async (user, shipAddress) => {

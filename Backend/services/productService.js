@@ -76,110 +76,115 @@ exports.updateProduct = async (productId, reqData) => {
   }
 };
 
-exports.getAllProducts = async (reqQuery) => {
-  const {
-    category,
-    color,
-    sizes,
-    minPrice,
-    maxPrice,
-    minDiscount,
-    maxDiscount,
-    sort,
-    stock,
-    pageNumber,
-    pageSize,
-  } = reqQuery;
+exports.getProductsAll = async (reqQuery) => {
+  try {
+    const {
+      category,
+      color,
+      sizes,
+      minPrice,
+      maxPrice,
+      minDiscount,
+      maxDiscount,
+      sort,
+      stock,
+    } = reqQuery;
+    // console.log(reqQuery);
+    // Limiting how many product show on each page
+    let pageSize = reqQuery.pageSize || 10;
+    let pageNumber = reqQuery.pageNumber || 1;
 
-  // Limiting how many product show on each page
-  pageSize = pageSize || 10;
+    let query = Product.find().populate("category");
 
-  let query = Product.find().populate("category");
-  //               FOR CATEGORY
-  if (category) {
-    const existCategories = await Category.findOne({ name: category });
+    //               FOR CATEGORY
+    if (category) {
+      const existCategories = await Category.findOne({ name: category });
 
-    if (existCategories) {
-      query.where("category").equals(existCategories._id);
-    } else {
-      return { content: [], currentPage: 1, totalPages: 0 };
+      if (existCategories) {
+        query = query.where("category").equals(existCategories._id);
+      } else {
+        return { content: [], currentPage: 1, totalPages: 0 };
+      }
     }
-  }
 
-  // Color
-  if (color) {
-    //  making unique array
-    const colorSet = new Set(
-      color.split(",").map((color) => color.trim().toLowerCase())
-    );
+    // Color
+    if (color) {
+      //  making unique array
+      const colorSet = new Set(
+        color.split(",").map((color) => color.trim().toLowerCase())
+      );
 
-    // if any color matches with product color then match and return product
-    const colorRegex =
-      //    RegExp convert into regular expression
-      colorSet.size > 0 ? new RegExp([...colorSet].join("|"), "i") : null;
+      // if any color matches with product color then match and return product
+      const colorRegex =
+        //    RegExp convert into regular expression
+        colorSet.size > 0 ? new RegExp([...colorSet].join("|"), "i") : null;
 
-    //  updating query
-    //  applies the regular expression we created earlier to the "color" field,
-    query = query.where("color").regex(colorRegex);
-  }
-  // Now for size
-  if (sizes) {
-    const sizeSet = new Set(sizes);
-    //    Modify the query to include only items where the 'sizes.name' field matches any of the values in the sizeSet
-    query = query.where("sizes.name").in([...sizeSet]);
-  }
-
-  //   minprice and maxPrice
-  if (minPrice && maxPrice) {
-    query = query.where("price").gte(minPrice).lte(maxPrice);
-  }
-  if (minPrice && !maxprice) {
-    query = query.where("price").gte(minPrice);
-  }
-  if (maxPrice && !minprice) {
-    query = query.where("price").lte(maxPrice);
-  }
-
-  //   For Discount
-  if (minDiscount) {
-    query = query.where("discountPrice").gte(minDiscount);
-  }
-  if (maxDiscount) {
-    query = query.where("discountPrice").gte(maxDiscount);
-  }
-
-  //  For Stcok
-  if (stock) {
-    if (stock === "in_stock") {
-      query = query.where("quantity").gt(0);
-    } else if (stock === "out_of_stock") {
-      query = query.where("quantity").lte(0);
+      //  updating query
+      //  applies the regular expression we created earlier to the "color" field,
+      query = query.where("color").regex(colorRegex);
     }
-  }
-
-  //  For Sorting
-  if (sort) {
-    if (sort === "price_high_to_low") {
-      query = query.sort("-price");
-    } else if (sort === "price_low_to_high") {
-      query = query.sort("price");
+    // Now for size
+    if (sizes) {
+      const sizeSet = new Set(sizes);
+      //    Modify the query to include only items where the 'sizes.name' field matches any of the values in the sizeSet
+      query = query.where("sizes.name").in([...sizeSet]);
     }
+
+    //   minprice and maxPrice
+    if (minPrice && maxPrice) {
+      query = query.where("price").gte(minPrice).lte(maxPrice);
+    }
+    if (minPrice && !maxprice) {
+      query = query.where("price").gte(minPrice);
+    }
+    if (maxPrice && !minprice) {
+      query = query.where("price").lte(maxPrice);
+    }
+
+    //   For Discount
+    if (minDiscount) {
+      query = query.where("discountPrice").gte(minDiscount);
+    }
+    if (maxDiscount) {
+      query = query.where("discountPrice").gte(maxDiscount);
+    }
+
+    //  For Stcok
+    if (stock) {
+      if (stock === "in_stock") {
+        query = query.where("quantity").gt(0);
+      } else if (stock === "out_of_stock") {
+        query = query.where("quantity").lte(0);
+      }
+    }
+
+    //  For Sorting
+    if (sort) {
+      if (sort === "price_high_to_low") {
+        query = query.sort("-price");
+      } else if (sort === "price_low_to_high") {
+        query = query.sort("price");
+      }
+    }
+
+    const totalProducts = await Product.countDocuments(query);
+
+    // skip
+    // on 1 page  0-10
+    const skip = (pageNumber - 1) * pageSize;
+
+    query = query.skip(skip).limit(pageSize);
+
+    // Now executing query at last
+    const products = await query.exec();
+    console.log(products);
+    const totalPages = Math.ceil(totalProducts / pageSize);
+
+    return { content: products, currentPage: pageNumber, totalPages };
+  } catch (err) {
+    console.log(err);
+    throw new Error(err);
   }
-
-  const totalProducts = await Product.countDocuments(query);
-
-  // skip
-  // on 1 page  0-10
-  const skip = (pageNumber - 1) * pageSize;
-
-  query = query.skip(skip).limit(pageSize);
-
-  // Now executing query at last
-  const products = await query.exec();
-
-  const totalPages = Math.ceil(totalProducts / pageSize);
-
-  return { content: products, currentPage: pageNumber, totalPages };
 };
 
 exports.findProductById = async (productId) => {

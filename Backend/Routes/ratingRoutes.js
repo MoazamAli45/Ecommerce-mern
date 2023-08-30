@@ -7,3 +7,4 @@ router.use(authController.protect);
 
 router.post("/:productId", ratingController.addRating);
 router.get("/:productId", ratingController.getAllRatings);
+module.exports = router;

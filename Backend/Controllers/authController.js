@@ -52,13 +52,13 @@ exports.login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return next(new AppError("Please provide email or password", 400));
+    throw new AppError("Please provide email or password", 400);
   }
 
   const user = await User.findOne({ email }).select("+password");
   console.log("From Login ", user);
   if (!user || !(await user.correctPassword(password, user.password))) {
-    return next(new AppError("Incorrect email or password", 401));
+    throw new AppError("Incorrect email or password", 401);
   }
 
   createdSendToken(user, 200, res);
@@ -76,7 +76,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 
   if (!token) {
-    return next(new AppError("You are not logged in", 404));
+    throw new AppError("You are not logged in", 404);
   }
 
   // Decoding Token
@@ -85,9 +85,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   const currentUser = await User.findById(decoded.id);
 
   if (!currentUser) {
-    return next(
-      new AppError("The user belonging to this token does not exist")
-    );
+    throw new AppError("The user belonging to this token does not exist");
   }
   console.log(currentUser);
   req.user = currentUser;
@@ -103,8 +101,9 @@ exports.restrictTo = (...roles) => {
   // Due to closure it can access
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
-      return next(
-        new AppError("You do not have permission to perform this action", 403)
+      throw new AppError(
+        "You do not have permission to perform this action",
+        403
       );
     }
     next();
