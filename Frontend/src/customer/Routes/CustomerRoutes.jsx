@@ -6,11 +6,15 @@ import ProductDetailPage from "./../pages/ProductDetailPage";
 import CheckoutPage from "./../pages/CheckoutPage";
 import OrderPage from "./../pages/OrderPage";
 import OrderSummaryPage from "./../pages/OrderSummaryPage";
+import LoginPage from "./../pages/LoginPage";
+import SignupPage from "./../pages/SignupPage";
 
 const CustomerRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/signup" element={<SignupPage />} />
       <Route
         path="/:levelOne/:leveloTwo/:levelThree"
         element={<ProductPage />}

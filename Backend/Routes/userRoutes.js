@@ -4,8 +4,8 @@ const router = express.Router();
 const userController = require("../Controllers/userController");
 const authController = require("../Controllers/authController");
 
-router.post("/signup", authController.signUp);
-router.post("/login", authController.login);
+router.post("/auth/signup", authController.signUp);
+router.post("/auth/login", authController.login);
 
 // protecting with token
 router.use(authController.protect);
