@@ -187,6 +187,7 @@ export default function MainNavigation() {
     setAnchorEl(event.currentTarget);
   };
   const handleLogout = () => {
+    handleClose();
     dispatch(logout());
   };
 
@@ -540,8 +541,8 @@ export default function MainNavigation() {
                   </a>
                 </div> */}
 
-                {isAuth && user && (
-                  <div>
+                <div>
+                  {isAuth && user && (
                     <Button
                       id="demo-positioned-button"
                       aria-controls={
@@ -551,34 +552,40 @@ export default function MainNavigation() {
                       aria-expanded={openMenu ? "true" : undefined}
                       onClick={handleOpen}
                     >
-                      <Avatar sx={{ bgcolor: "green" }}>
+                      <Avatar sx={{ bgcolor: "#9155FD" }}>
                         {user.user.firstName[0].toUpperCase()}
                       </Avatar>
                     </Button>
-                    <Menu
-                      id="demo-positioned-menu"
-                      aria-labelledby="demo-positioned-button"
-                      anchorEl={anchorEl}
-                      open={openMenu}
-                      onClose={handleClose}
-                      anchorOrigin={{
-                        vertical: "top",
-                        horizontal: "left",
-                      }}
-                      transformOrigin={{
-                        vertical: "top",
-                        horizontal: "left",
-                      }}
-                    >
-                      <MenuItem onClick={handleClose}>Profile</MenuItem>
-                      <MenuItem onClick={navigateHandler}>My account</MenuItem>
-                      <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                    </Menu>
-                  </div>
-                )}
+                  )}
+                  <Menu
+                    id="demo-positioned-menu"
+                    aria-labelledby="demo-positioned-button"
+                    anchorEl={anchorEl}
+                    open={openMenu}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "left",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "left",
+                    }}
+                  >
+                    <MenuItem onClick={handleClose}>Profile</MenuItem>
+                    <MenuItem onClick={navigateHandler}>My account</MenuItem>
+                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                  </Menu>
+                </div>
+
                 {/*   If not loged IN */}
                 {!isAuth && !user && (
-                  <Button onClick={signupHandler}>Login/SignUp</Button>
+                  <Button
+                    onClick={signupHandler}
+                    className="text-md md:text-lg"
+                  >
+                    Login/SignUp
+                  </Button>
                 )}
                 {/* Search */}
                 <div className="flex lg:ml-6">
