@@ -1,13 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../../../store/reducers";
+import { loginUser, reset } from "../../../../store/authReducer";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 import "react-toastify/dist/ReactToastify.css";
-import { StepContext } from "@mui/material";
 
 export default function LoginForm() {
   const [password, setPassword] = useState("");
@@ -17,10 +16,18 @@ export default function LoginForm() {
 
   // Getting the value
   // state.auth as I have given name in store for reducer
-  const { isLoading, error } = useSelector((state) => state.auth);
-  // console.log(isLoading);
+  const { isLoading, error, isAuth, user } = useSelector((state) => state.auth);
 
-  // console.log(isLoggedIn);
+  useEffect(() => {
+    //   is Success
+    if (isAuth && user) {
+      toast.success("Logged In Successfully!");
+      // dispatch(reset());
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
+    }
+  }, [isAuth, user, navigate]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -29,26 +36,17 @@ export default function LoginForm() {
       password,
     };
 
-    // console.log(data);
-    // As async function
-    dispatch(loginUser(data)).then((result) => {
-      console.log(result.payload.status);
-      if (result.payload.status === "fail") {
-        toast.error("Error", result.message);
-      }
-
-      if (result.payload.status === "success") {
-        toast.success("Logged In Successfully!");
-
-        setTimeout(() => {
-          navigate("/");
-        }, 3000);
-      }
-    });
-
+    // Now calling that function  Login Function
+    dispatch(loginUser(data));
     setEmail("");
     setPassword("");
   };
+
+  if (error) {
+    toast.error(error);
+
+    dispatch(reset());
+  }
 
   return (
     <>

@@ -67,21 +67,29 @@ exports.login = catchAsync(async (req, res) => {
 // protecting
 exports.protect = catchAsync(async (req, res, next) => {
   let token;
+
+  console.log(req.headers.authorization);
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
     //eg: Bearer 12345678899
-    token = req.headers.authorization.split(" ")[1];
+    //  As from Client side it come in string so parse
+    token = JSON.parse(req.headers.authorization.split(" ")[1]);
+    // console.log("Check" + token);
   }
+  // now getting from cookies as in original web page
 
+  // console.log("CHEKCED" + token);
   if (!token) {
+    console.log("You are not logged in");
     throw new AppError("You are not logged in", 404);
   }
 
   // Decoding Token
+  console.log(token);
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-
+  console.log("DECODED" + decoded);
   const currentUser = await User.findById(decoded.id);
 
   if (!currentUser) {
@@ -108,4 +116,18 @@ exports.restrictTo = (...roles) => {
     }
     next();
   };
+};
+
+//  Logout
+exports.logout = (req, res) => {
+  const cookieOptions = {
+    // will remain for 10 sec
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  };
+  if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
+  res.cookie("jwt", "loggedout", cookieOptions);
+  res.status(200).json({
+    status: "success",
+  });
 };

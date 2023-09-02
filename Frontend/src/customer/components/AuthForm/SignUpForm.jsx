@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { useDispatch } from "react-redux";
-import { registerUser } from "../../../../store/reducers";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser, reset } from "../../../../store/authReducer";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 export default function LoginForm() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -11,10 +12,27 @@ export default function LoginForm() {
   const [lastName, setLastName] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  const { isLoading, isAuth, error, user } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    //   is Success
+    if (isAuth && user) {
+      toast.success("Logged In Successfully!");
+      //  Reset the state after success
+      // dispatch(reset());
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
+    }
+  }, [isAuth, user, navigate]);
 
   const submitHandler = (e) => {
     e.preventDefault();
+    if (password !== passwordConfirm) {
+      toast.error("Password does match with Confirm Password.");
+      return;
+    }
 
     const data = {
       email,
@@ -23,8 +41,7 @@ export default function LoginForm() {
       lastName,
       passwordConfirm,
     };
-
-    console.log(data);
+    // console.log(data);
 
     dispatch(registerUser(data));
     setEmail("");
@@ -32,10 +49,14 @@ export default function LoginForm() {
     setFirstName("");
     setLastName("");
     setPasswordConfirm("");
-
-    // navigate("/");
   };
 
+  // navigate("/");
+
+  if (error) {
+    toast.error(error);
+    dispatch(reset());
+  }
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -43,6 +64,7 @@ export default function LoginForm() {
           <div className="flex justify-center">
             <AccountCircleIcon style={{ fontSize: 150, color: "#9155FD" }} />
           </div>
+          <ToastContainer position="top-center" autoClose={2000} />
           <h2 className="mt-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Register Your Account
           </h2>
@@ -164,7 +186,8 @@ export default function LoginForm() {
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Register
+                {isLoading && "Submiting ..."}
+                {!isLoading && "Register"}
               </button>
             </div>
           </form>

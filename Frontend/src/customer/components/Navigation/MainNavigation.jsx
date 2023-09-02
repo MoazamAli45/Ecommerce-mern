@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -12,6 +12,8 @@ import MenuItem from "@mui/material/MenuItem";
 
 import logo from "/logo.png";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { getUser, logout } from "../../../../store/authReducer";
 
 const navigation = {
   categories: [
@@ -153,7 +155,25 @@ export default function MainNavigation() {
   const [anchorEl, setAnchorEl] = useState(null);
   const openMenu = Boolean(anchorEl);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  //   For getting value from store
+  const { isAuth, user } = useSelector((state) => state.auth);
 
+  // //   Gettign User Profile
+  useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
+    // console.log(jwt);
+    if (jwt !== "undefined" || !jwt) {
+      // if (isAuth) {
+      dispatch(getUser(jwt));
+    }
+    // }
+  }, [dispatch]);
+  // console.log(user);
+
+  const signupHandler = () => {
+    navigate("/signup");
+  };
   const navigateHandler = () => {
     navigate("/account/order");
     handleClose();
@@ -165,6 +185,9 @@ export default function MainNavigation() {
 
   const handleOpen = (event) => {
     setAnchorEl(event.currentTarget);
+  };
+  const handleLogout = () => {
+    dispatch(logout());
   };
 
   return (
@@ -517,39 +540,46 @@ export default function MainNavigation() {
                   </a>
                 </div> */}
 
-                <div>
-                  <Button
-                    id="demo-positioned-button"
-                    aria-controls={
-                      openMenu ? "demo-positioned-menu" : undefined
-                    }
-                    aria-haspopup="true"
-                    aria-expanded={openMenu ? "true" : undefined}
-                    onClick={handleOpen}
-                  >
-                    <Avatar sx={{ bgcolor: "green" }}>V</Avatar>
-                  </Button>
-                  <Menu
-                    id="demo-positioned-menu"
-                    aria-labelledby="demo-positioned-button"
-                    anchorEl={anchorEl}
-                    open={openMenu}
-                    onClose={handleClose}
-                    anchorOrigin={{
-                      vertical: "top",
-                      horizontal: "left",
-                    }}
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "left",
-                    }}
-                  >
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={navigateHandler}>My account</MenuItem>
-                    <MenuItem onClick={handleClose}>Logout</MenuItem>
-                  </Menu>
-                </div>
-
+                {isAuth && user && (
+                  <div>
+                    <Button
+                      id="demo-positioned-button"
+                      aria-controls={
+                        openMenu ? "demo-positioned-menu" : undefined
+                      }
+                      aria-haspopup="true"
+                      aria-expanded={openMenu ? "true" : undefined}
+                      onClick={handleOpen}
+                    >
+                      <Avatar sx={{ bgcolor: "green" }}>
+                        {user.user.firstName[0].toUpperCase()}
+                      </Avatar>
+                    </Button>
+                    <Menu
+                      id="demo-positioned-menu"
+                      aria-labelledby="demo-positioned-button"
+                      anchorEl={anchorEl}
+                      open={openMenu}
+                      onClose={handleClose}
+                      anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "left",
+                      }}
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "left",
+                      }}
+                    >
+                      <MenuItem onClick={handleClose}>Profile</MenuItem>
+                      <MenuItem onClick={navigateHandler}>My account</MenuItem>
+                      <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                    </Menu>
+                  </div>
+                )}
+                {/*   If not loged IN */}
+                {!isAuth && !user && (
+                  <Button onClick={signupHandler}>Login/SignUp</Button>
+                )}
                 {/* Search */}
                 <div className="flex lg:ml-6">
                   <a href="#" className="p-2 text-gray-400 hover:text-gray-500">
