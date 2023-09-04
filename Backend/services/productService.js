@@ -2,7 +2,7 @@ const Category = require("../Model/categoryModel");
 const Product = require("../Model/productModel");
 
 //     Creating Product
-exports.createProduct = async (reqData) => {
+const createProduct = async (reqData) => {
   try {
     let topLevel = await Category.findOne({ name: reqData.topLevel });
     if (!topLevel) {
@@ -196,6 +196,10 @@ exports.findProductById = async (productId) => {
 //     For Uploading Multiple Products  at start
 exports.createMultipleProduct = async (products) => {
   for (product of products) {
+    console.log(product);
     await createProduct(product);
   }
+};
+const productSerice = {
+  createProduct,
 };
