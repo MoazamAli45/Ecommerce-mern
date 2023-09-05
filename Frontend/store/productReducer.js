@@ -23,18 +23,18 @@ export const getAllProducts = createAsyncThunk(
     } = reqData;
 
     try {
-      const data = await api.get(
+      const products = await api.get(
         `/api/v1/products?colors=${colors}&sizes=${sizes}&minPrice=${minPrice}&maxPrice=${maxPrice}&category=${category}&stock=${stock}&sort=${sort}&pageNumber=${pageNumber}&pageSize=${pageSize}`
       );
-      const products = await data.json();
 
-      if (products.status === "error" || products.status === "fail") {
-        throw new Error(products.message);
-      }
-      return products;
+      console.log(products.data.data);
+      // if (products.status === "error" || products.status === "fail") {
+      //   throw new Error(products.message);
+      // }
+      return products.data.data;
     } catch (err) {
-      console.log(err);
-      return thunkAPI.rejectWithValue(err);
+      // console.log(err);
+      return thunkAPI.rejectWithValue(err.response.data.message);
     }
   }
 );

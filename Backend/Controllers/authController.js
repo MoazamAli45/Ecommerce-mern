@@ -78,7 +78,8 @@ exports.protect = catchAsync(async (req, res, next) => {
     // console.log(typeof req.headers.authorization);
     //   For Frontend
     token = JSON.parse(req.headers.authorization.split(" ")[1]);
-    // FOR BACKEND   token = req.headers.authorization.split(" ")[1];
+    // FOR BACKEND
+    // token = req.headers.authorization.split(" ")[1];
     // console.log("Check" + token);
   }
   // now getting from cookies as in original web page

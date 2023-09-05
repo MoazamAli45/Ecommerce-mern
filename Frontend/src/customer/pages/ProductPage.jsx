@@ -17,6 +17,11 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+
+import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { getAllProducts } from "../../../store/productReducer";
 
 const sortOptions = [
   { name: "Price: Low to High", href: "#", current: false },
@@ -53,101 +58,101 @@ const singleFilters = [
     name: "Price",
     options: [
       {
-        value: "159 to 399",
+        value: "159-399",
         label: "Rs159 to Rs399",
         checked: false,
       },
 
       {
-        value: "399 to 999",
+        value: "399-999",
         label: "Rs399 to Rs999",
         checked: false,
       },
       {
-        value: "999 to 1999",
-        label: "Rs159 to Rs399",
+        value: "999-1999",
+        label: "Rs999 to Rs1999",
         checked: false,
       },
       {
-        value: "1999 to 2999",
+        value: "1999-2999",
         label: "Rs1999 to Rs2999",
         checked: false,
       },
       {
-        value: "2999 to 3999",
+        value: "2999-3999",
         label: "Rs2999 to Rs3999",
         checked: false,
       },
       {
-        value: "3999 to 4999",
+        value: "3999-4999",
         label: "Rs3999 to Rs4999",
         checked: false,
       },
     ],
   },
-  {
-    id: "discount",
-    name: "Discount Range",
-    options: [
-      {
-        value: "above 10%",
-        label: "10% And Above",
-        checked: false,
-      },
+  // {
+  //   id: "discount",
+  //   name: "Discount Range",
+  //   options: [
+  //     {
+  //       value: "above 10%",
+  //       label: "10% And Above",
+  //       checked: false,
+  //     },
 
-      {
-        value: "above 20%",
-        label: "20% And Above",
-        checked: false,
-      },
+  //     {
+  //       value: "above 20%",
+  //       label: "20% And Above",
+  //       checked: false,
+  //     },
 
-      {
-        value: "above 30%",
-        label: "30% And Above",
-        checked: false,
-      },
+  //     {
+  //       value: "above 30%",
+  //       label: "30% And Above",
+  //       checked: false,
+  //     },
 
-      {
-        value: "above 40%",
-        label: "40% And Above",
-        checked: false,
-      },
+  //     {
+  //       value: "above 40%",
+  //       label: "40% And Above",
+  //       checked: false,
+  //     },
 
-      {
-        value: "above 50%",
-        label: "50% And Above",
-        checked: false,
-      },
+  //     {
+  //       value: "above 50%",
+  //       label: "50% And Above",
+  //       checked: false,
+  //     },
 
-      {
-        value: "above 60%",
-        label: "60% And Above",
-        checked: false,
-      },
+  //     {
+  //       value: "above 60%",
+  //       label: "60% And Above",
+  //       checked: false,
+  //     },
 
-      {
-        value: "above 70%",
-        label: "70% And Above",
-        checked: false,
-      },
-      {
-        value: "above 80%",
-        label: "80% And Above",
-        checked: false,
-      },
-    ],
-  },
+  //     {
+  //       value: "above 70%",
+  //       label: "70% And Above",
+  //       checked: false,
+  //     },
+  //     {
+  //       value: "above 80%",
+  //       label: "80% And Above",
+  //       checked: false,
+  //     },
+  //   ],
+  // },
   {
     id: "availability",
     name: "Availability",
     options: [
       {
-        value: "in-stock",
+        value: "in_stock",
         label: "In Stock",
         checked: false,
       },
       {
-        value: "out-of-stock",
+        value: "out_of_stock",
         label: "Out of  Stock",
         checked: false,
       },
@@ -163,6 +168,10 @@ export default function ProductPage() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [gridView, setGridView] = useState(true);
   const navigate = useNavigate();
+  const params = useParams();
+
+  //    From redux toolkit
+  const dispatch = useDispatch();
 
   // ADDING CHECKBOX QUERY ON URL
   const filterHandler = (sectionId, value) => {
@@ -210,6 +219,48 @@ export default function ProductPage() {
   const toggleGridViewHandler = () => {
     setGridView(!gridView);
   };
+
+  //  Now for getting data getting Query
+  const decodedQuery = decodeURIComponent(window.location.search);
+  const searchParams = new URLSearchParams(decodedQuery);
+
+  const color = searchParams.get("color");
+  const size = searchParams.get("size");
+  const price = searchParams.get("price");
+  const stock = searchParams.get("availability");
+
+  //  For Sorting
+  const sort = searchParams.get("sort");
+  const pageNumber = searchParams.get("pageNumber") || 1;
+
+  // getting data
+  useEffect(() => {
+    const [minPrice, maxPrice] =
+      price === null ? [0, 100000] : price.split("-").map(Number);
+
+    const data = {
+      category: params.levelThree,
+      colors: color || [],
+      sizes: size || [],
+      minPrice,
+      maxPrice,
+      stock: stock || [],
+      sort: sort || "price_high_to_low",
+      pageNumber: pageNumber - 1,
+      pageSize: 5,
+    };
+
+    dispatch(getAllProducts(data));
+  }, [
+    params.levelThree,
+    price,
+    color,
+    size,
+    pageNumber,
+    stock,
+    sort,
+    dispatch,
+  ]);
 
   return (
     <div className="bg-white">

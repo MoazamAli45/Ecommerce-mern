@@ -3,15 +3,15 @@ const mongoose = require("mongoose");
 const productSchema = new mongoose.Schema({
   title: {
     type: String,
-    // required: [true, "Please provide Title"],
+    required: [true, "Please provide Title"],
   },
   description: {
     type: String,
-    // required: [true, "Please provide Description"],
+    required: [true, "Please provide Description"],
   },
   price: {
     type: Number,
-    // required: [true, "Please provide Price"],
+    required: [true, "Please provide Price"],
   },
   discountPrice: {
     type: Number,
@@ -57,9 +57,13 @@ const productSchema = new mongoose.Schema({
     default: 0,
   },
   category: [
+    // {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "categories",
+    // },
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "categories",
+      name: { type: String },
+      level: { type: Number },
     },
   ],
   createdAt: {

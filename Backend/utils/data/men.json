@@ -7,13 +7,26 @@
     "discountPercent": 0,
     "quantity": null,
     "brand": null,
-    "sizes": [],
-    "color": null,
-    "imageUrl": "https://rukminim2.flixcart.com/image/612/612/xif0q/fabric/t/i/f/yes-2-2-m-unstitched-2-m-2-5-m-5idm-rutuja-grey-sarvada-original-imagjq3xhf8v7snt.jpeg?q=70",
+    "sizes": [{ "name": "large", "quantity": 30 }],
+    "color": "blue",
+    "imageUrl": "https://i.pinimg.com/1200x/45/6e/3c/456e3c0ee7588bf0c86e720e09aadb67.jpg",
     "ratings": [],
     "reviews": [],
     "numRatings": 0,
-    "category": [],
+    "category": [
+      {
+        "name": "women",
+        "level": 1
+      },
+      {
+        "name": "clothing",
+        "level": 2
+      },
+      {
+        "name": "dresses",
+        "level": 3
+      }
+    ],
     "createdAt": "2023-09-04T00:00:00.000Z"
   },
   {
@@ -24,13 +37,26 @@
     "discountPercent": 0,
     "quantity": null,
     "brand": null,
-    "sizes": [],
-    "color": null,
+    "sizes": [{ "name": "medium", "quantity": 30 }],
+    "color": "green",
     "imageUrl": "https://rukminim2.flixcart.com/image/612/612/k47cgi80/fabric/u/f/k/czy-30013-reya-original-imafn5wfhvj6pxvu.jpeg?q=70",
     "ratings": [],
     "reviews": [],
     "numRatings": 0,
-    "category": [],
+    "category": [
+      {
+        "name": "women",
+        "level": 1
+      },
+      {
+        "name": "clothing",
+        "level": 2
+      },
+      {
+        "name": "dresses",
+        "level": 3
+      }
+    ],
     "createdAt": "2023-09-04T00:00:00.000Z"
   },
   {
@@ -41,13 +67,26 @@
     "discountPercent": 0,
     "quantity": null,
     "brand": null,
-    "sizes": [],
-    "color": null,
+    "sizes": [{ "name": "small", "quantity": 30 }],
+    "color": "red",
     "imageUrl": "https://rukminim2.flixcart.com/image/612/612/kxuqdu80/fabric/l/s/5/yes-2-m-unstitched-2-2-m-fkrt-1463-45-inithi-original-imaga7sbhwjbtvcq.jpeg?q=70",
     "ratings": [],
     "reviews": [],
     "numRatings": 0,
-    "category": [],
+    "category": [
+      {
+        "name": "women",
+        "level": 1
+      },
+      {
+        "name": "clothing",
+        "level": 2
+      },
+      {
+        "name": "dresses",
+        "level": 3
+      }
+    ],
     "createdAt": "2023-09-04T00:00:00.000Z"
   },
   {
@@ -58,13 +97,26 @@
     "discountPercent": 0,
     "quantity": null,
     "brand": null,
-    "sizes": [],
-    "color": null,
-    "imageUrl": "https://rukminim2.flixcart.com/image/612/612/l2urv680/fabric/t/t/7/yes-2-10m-unstitched-2-10m-2777-s-creation-original-image3x2ayfpgchw.jpeg?q=70",
+    "sizes": [{ "name": "large", "quantity": 30 }],
+    "color": "orange",
+    "imageUrl": "https://img.freepik.com/premium-psd/female-summer-dress-mocup_1097-1612.jpg?size=626&ext=jpg&ga=GA1.1.1395400388.1691749632&semt=ais",
     "ratings": [],
     "reviews": [],
     "numRatings": 0,
-    "category": [],
+    "category": [
+      {
+        "name": "women",
+        "level": 1
+      },
+      {
+        "name": "clothing",
+        "level": 2
+      },
+      {
+        "name": "dresses",
+        "level": 3
+      }
+    ],
     "createdAt": "2023-09-04T00:00:00.000Z"
   },
   {
@@ -75,13 +127,26 @@
     "discountPercent": 0,
     "quantity": null,
     "brand": null,
-    "sizes": [],
-    "color": null,
+    "sizes": [{ "name": "large", "quantity": 30 }],
+    "color": "white",
     "imageUrl": "https://rukminim2.flixcart.com/image/612/612/xif0q/t-shirt/i/z/a/xl-sc-hrn-w-twinkles-whi-020-xl-sloth-cloth-original-imagreyrsnhe5vt9.jpeg?q=70",
     "ratings": [],
     "reviews": [],
     "numRatings": 0,
-    "category": [],
+    "category": [
+      {
+        "name": "women",
+        "level": 1
+      },
+      {
+        "name": "clothing",
+        "level": 2
+      },
+      {
+        "name": "dresses",
+        "level": 3
+      }
+    ],
     "createdAt": "2023-09-04T00:00:00.000Z"
   },
   {
@@ -92,13 +157,26 @@
     "discountPercent": 0,
     "quantity": null,
     "brand": null,
-    "sizes": [],
-    "color": null,
-    "imageUrl": "https://rukminim2.flixcart.com/image/612/612/xif0q/fabric/s/c/k/yes-2-2-m-unstitched-2-m-2-5-m-5idm-rutuja-grey-sarvada-original-imagjq3xhf8v7snt.jpeg?q=70",
+    "sizes": [{ "name": "large", "quantity": 30 }],
+    "color": "blue",
+    "imageUrl": "https://img.freepik.com/premium-photo/pretty-girl-posing-confidently-with-attitude-fashion-shoot-wearing-desi-dress-street_658768-439.jpg?size=626&ext=jpg&ga=GA1.2.1395400388.1691749632&semt=ais",
     "ratings": [],
     "reviews": [],
     "numRatings": 0,
-    "category": [],
+    "category": [
+      {
+        "name": "men",
+        "level": 1
+      },
+      {
+        "name": "clothing",
+        "level": 2
+      },
+      {
+        "name": "menKurtas",
+        "level": 3
+      }
+    ],
     "createdAt": "2023-09-04T00:00:00.000Z"
   },
   {
@@ -109,13 +187,26 @@
     "discountPercent": 74,
     "quantity": null,
     "brand": null,
-    "sizes": [],
-    "color": null,
+    "sizes": [{ "name": "large", "quantity": 30 }],
+    "color": "bleck",
     "imageUrl": "https://rukminim2.flixcart.com/image/612/612/xif0q/fabric/j/1/q/yes-2-2-m-unstitched-2-m-2-5-m-3black-arya-sarvada-original-imagnzb8uaqtghbx.jpeg?q=70",
     "ratings": [],
     "reviews": [],
     "numRatings": 0,
-    "category": [],
+    "category": [
+      {
+        "name": "men",
+        "level": 1
+      },
+      {
+        "name": "clothing",
+        "level": 2
+      },
+      {
+        "name": "menKurtas",
+        "level": 3
+      }
+    ],
     "createdAt": "2023-09-04T00:00:00.000Z"
   },
   {
@@ -126,13 +217,26 @@
     "discountPercent": 71,
     "quantity": null,
     "brand": null,
-    "sizes": [],
-    "color": null,
-    "imageUrl": "https://rukminim2.flixcart.com/image/612/612/xif0q/kurta/p/d/u/m-rt-purekhadi-pink-kurti-rimeline-original-imagkadsazatnefe.jpeg?q=70",
+    "sizes": [{ "name": "large", "quantity": 30 }],
+    "color": "yellow",
+    "imageUrl": "https://bechlo.pk/cdn/shop/products/rrurC5OHzc_590x.jpg?v=1679235529",
     "ratings": [],
     "reviews": [],
     "numRatings": 0,
-    "category": [],
+    "category": [
+      {
+        "name": "men",
+        "level": 1
+      },
+      {
+        "name": "clothing",
+        "level": 2
+      },
+      {
+        "name": "menKurtas",
+        "level": 3
+      }
+    ],
     "createdAt": "2023-09-04T00:00:00.000Z"
   },
   {
@@ -143,30 +247,26 @@
     "discountPercent": 73,
     "quantity": null,
     "brand": null,
-    "sizes": [],
-    "color": null,
+    "sizes": [{ "name": "large", "quantity": 30 }],
+    "color": "red",
     "imageUrl": "https://rukminim2.flixcart.com/image/612/612/xif0q/ethnic-set/n/g/l/s-plozo-set-river-of-cloth-original-imagguzztzesvphc.jpeg?q=70",
     "ratings": [],
     "reviews": [],
     "numRatings": 0,
-    "category": [],
-    "createdAt": "2023-09-04T00:00:00.000Z"
-  },
-  {
-    "title": "AYKA CLOTHINGS",
-    "description": "Unstitched Cotton Blend Salwar Suit Material Printed",
-    "price": 360,
-    "discountPrice": 0,
-    "discountPercent": 76,
-    "quantity": null,
-    "brand": null,
-    "sizes": [],
-    "color": null,
-    "imageUrl": "https://rukminim2.flixcart.com/image/612/612/xif0q/fabric/5/c/p/yes-2-2-m-unstitched-2-m-2-5-m-1008dm001ag-ayka-clothings-original-imagghayyfwr4tws.jpeg?q=70",
-    "ratings": [],
-    "reviews": [],
-    "numRatings": 0,
-    "category": [],
+    "category": [
+      {
+        "name": "women",
+        "level": 1
+      },
+      {
+        "name": "clothing",
+        "level": 2
+      },
+      {
+        "name": "dresses",
+        "level": 3
+      }
+    ],
     "createdAt": "2023-09-04T00:00:00.000Z"
   },
   {
@@ -177,30 +277,26 @@
     "discountPercent": 77,
     "quantity": null,
     "brand": null,
-    "sizes": [],
-    "color": null,
+    "sizes": [{ "name": "large", "quantity": 30 }],
+    "color": "black",
     "imageUrl": "https://rukminim2.flixcart.com/image/612/612/xif0q/ethnic-set/w/r/w/3xl-kurta-palazzo-set-rhythm-enterprises-original-imafz2vfjbgfcfvg-bb.jpeg?q=70",
     "ratings": [],
     "reviews": [],
     "numRatings": 0,
-    "category": [],
-    "createdAt": "2023-09-04T00:00:00.000Z"
-  },
-  {
-    "title": "VERCO",
-    "description": "Unstitched Crepe Salwar Suit Material Printed",
-    "price": 369,
-    "discountPrice": 0,
-    "discountPercent": 76,
-    "quantity": null,
-    "brand": null,
-    "sizes": [],
-    "color": null,
-    "imageUrl": "https://rukminim2.flixcart.com/image/612/612/xif0q/fabric/e/v/l/yes-2-2-m-unstitched-2-m-2-5-m-1008dm002ag-verco-original-imagghat8vhnxtkj.jpeg?q=70",
-    "ratings": [],
-    "reviews": [],
-    "numRatings": 0,
-    "category": [],
+    "category": [
+      {
+        "name": "women",
+        "level": 1
+      },
+      {
+        "name": "clothing",
+        "level": 2
+      },
+      {
+        "name": "dresses",
+        "level": 3
+      }
+    ],
     "createdAt": "2023-09-04T00:00:00.000Z"
   }
 ]

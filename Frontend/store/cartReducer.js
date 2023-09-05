@@ -44,11 +44,36 @@ export const updateCartItem = createAsyncThunk(
 );
 export const removeCartItem = createAsyncThunk(
   "cart/removeFromCart",
-  async (data, thunkAPI) => {}
+  async (data, thunkAPI) => {
+    try {
+      const data = await api.delete(`/api/v1/cartItems/${data.cartItemId}`);
+      const cartItem = await data.json();
+
+      if (cartItem.status === "fail" || cartItem.status === "error") {
+        throw new Error(cartItem.message);
+      }
+      return cartItem;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
 );
 export const getCart = createAsyncThunk(
-  "cart/addToCart",
-  async (data, thunkAPI) => {}
+  "cart/getCart",
+  async (data, thunkAPI) => {
+    try {
+      const data = await api.get(`/api/v1/carts`);
+
+      const carts = await data.json();
+
+      if (carts.status === "fail" || carts.status === "error") {
+        throw new Error(carts.message);
+      }
+      return carts;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
 );
 
 const cartSlice = createSlice({
@@ -79,8 +104,41 @@ const cartSlice = createSlice({
       //    For Updating Cart Item
       .addCase(updateCartItem.fulfilled, (state, action) => {
         state.isLoading = false;
+        //   id which wil be matched will be upadted one
         state.cartItems = state.cartItems.map((item) =>
           item._id === action.payload._id ? action.payload : item
         );
+      })
+      //   For removing Cart Item
+      .addCase(removeCartItem.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(removeCartItem.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      //  action.payload is id of cartItem
+      .addCase(removeCartItem.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.cartItems = state.cartItems.filter(
+          (item) => item._id !== action.payload
+        );
+      })
+
+      //  For get cart Item
+      .addCase(getCart.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getCart.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      //  action.payload will contain the whole cart array
+      .addCase(getCart.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.cartItems = action.payload.cartItems;
+        state.cart = action.payload;
       }),
 });
+
+export default cartSlice.reducer;

@@ -4,38 +4,38 @@ const Product = require("../Model/productModel");
 //     Creating Product
 const createProduct = async (reqData) => {
   try {
-    let topLevel = await Category.findOne({ name: reqData.topLevel });
-    if (!topLevel) {
-      topLevel = new Category({
-        name: reqData.topLevel,
-        level: 1,
-      });
-    }
+    // let topLevel = await Category.findOne({ name: reqData.topLevel });
+    // if (!topLevel) {
+    //   topLevel = new Category({
+    //     name: reqData.topLevel,
+    //     level: 1,
+    //   });
+    // }
 
-    let secondLevel = await Category.findOne({
-      name: reqData.secondLevel,
-      parentCategory: topLevel._id,
-    });
+    // let secondLevel = await Category.findOne({
+    //   name: reqData.secondLevel,
+    //   parentCategory: topLevel._id,
+    // });
 
-    if (!secondLevel) {
-      secondLevel = new Category({
-        name: reqData.secondLevel,
-        parentCategory: topLevel._id,
-        level: 2,
-      });
-    }
+    // if (!secondLevel) {
+    //   secondLevel = new Category({
+    //     name: reqData.secondLevel,
+    //     parentCategory: topLevel._id,
+    //     level: 2,
+    //   });
+    // }
 
-    let thirdLevel = await Category.findOne({
-      name: reqData.thirdLevel,
-      parentCategory: secondLevel._id,
-    });
-    if (!thirdLevel) {
-      thirdLevel = new Category({
-        name: reqData.thirdLevel,
-        parentCategory: secondLevel._id,
-        level: 3,
-      });
-    }
+    // let thirdLevel = await Category.findOne({
+    //   name: reqData.thirdLevel,
+    //   parentCategory: secondLevel._id,
+    // });
+    // if (!thirdLevel) {
+    //   thirdLevel = new Category({
+    //     name: reqData.thirdLevel,
+    //     parentCategory: secondLevel._id,
+    //     level: 3,
+    //   });
+    // }
 
     const product = new Product({
       title: reqData.title,
@@ -47,7 +47,7 @@ const createProduct = async (reqData) => {
       brand: reqData.brand,
       color: reqData.color,
       imageUrl: reqData.imageUrl,
-      category: thirdLevel._id,
+      category: reqData.category,
     });
 
     return await product.save();
@@ -78,43 +78,37 @@ exports.updateProduct = async (productId, reqData) => {
 
 exports.getProductsAll = async (reqQuery) => {
   try {
-    const {
-      category,
-      color,
-      sizes,
-      minPrice,
-      maxPrice,
-      minDiscount,
-      maxDiscount,
-      sort,
-      stock,
-    } = reqQuery;
-    // console.log(reqQuery);
+    const { colors, sizes, minPrice, maxPrice, sort, stock } = reqQuery;
+    console.log(reqQuery);
     // Limiting how many product show on each page
     let pageSize = reqQuery.pageSize || 10;
     let pageNumber = reqQuery.pageNumber || 1;
 
-    let query = Product.find().populate("category");
-
+    let query = Product.find({
+      "category.name": reqQuery.category,
+      // " category.level": 3,
+    });
+    // console.log(query);
     //               FOR CATEGORY
-    if (category) {
-      const existCategories = await Category.findOne({ name: category });
+    // if (category) {
+    //   const existCategories = await Category.findOne({ name: category });
 
-      if (existCategories) {
-        query = query.where("category").equals(existCategories._id);
-      } else {
-        return { content: [], currentPage: 1, totalPages: 0 };
-      }
-    }
+    //   if (existCategories) {
+    //     query = query.where("category").equals(existCategories._id);
+    //   } else {
+    //     return { content: [], currentPage: 1, totalPages: 0 };
+    //   }
+    // }
 
     // Color
-    if (color) {
+    if (colors) {
+      console.log(colors);
       //  making unique array
       const colorSet = new Set(
-        color.split(",").map((color) => color.trim().toLowerCase())
+        colors.split(",").map((colors) => colors.trim().toLowerCase())
       );
-
-      // if any color matches with product color then match and return product
+      console.log(colorSet);
+      // if any colors matches with product colors then match and return product
       const colorRegex =
         //    RegExp convert into regular expression
         colorSet.size > 0 ? new RegExp([...colorSet].join("|"), "i") : null;
@@ -123,33 +117,36 @@ exports.getProductsAll = async (reqQuery) => {
       //  applies the regular expression we created earlier to the "color" field,
       query = query.where("color").regex(colorRegex);
     }
-    // Now for size
+    // // Now for size
     if (sizes) {
       const sizeSet = new Set(sizes);
+      console.log(sizeSet);
       //    Modify the query to include only items where the 'sizes.name' field matches any of the values in the sizeSet
-      query = query.where("sizes.name").in([...sizeSet]);
+      query = query.find({ "sizes.name": sizes });
     }
 
-    //   minprice and maxPrice
+    // //   minprice and maxPrice
     if (minPrice && maxPrice) {
-      query = query.where("price").gte(minPrice).lte(maxPrice);
+      console.log(minPrice);
+      query = query.find({ price: { $gte: minPrice, $lte: maxPrice } });
+      // query = query.where("price").gte(+minPrice).lte(+maxPrice);
     }
-    if (minPrice && !maxprice) {
-      query = query.where("price").gte(minPrice);
+    if (minPrice && !maxPrice) {
+      query = query.where("price").gte(+minPrice);
     }
-    if (maxPrice && !minprice) {
-      query = query.where("price").lte(maxPrice);
-    }
-
-    //   For Discount
-    if (minDiscount) {
-      query = query.where("discountPrice").gte(minDiscount);
-    }
-    if (maxDiscount) {
-      query = query.where("discountPrice").gte(maxDiscount);
+    if (maxPrice && !minPrice) {
+      query = query.where("price").lte(+maxPrice);
     }
 
-    //  For Stcok
+    // //   For Discount
+    // // if (minDiscount) {
+    // //   query = query.where("discountPrice").gte(minDiscount);
+    // // }
+    // // if (maxDiscount) {
+    // //   query = query.where("discountPrice").gte(maxDiscount);
+    // // }
+
+    // //  For Stcok
     if (stock) {
       if (stock === "in_stock") {
         query = query.where("quantity").gt(0);
@@ -158,7 +155,7 @@ exports.getProductsAll = async (reqQuery) => {
       }
     }
 
-    //  For Sorting
+    // //  For Sorting
     if (sort) {
       if (sort === "price_high_to_low") {
         query = query.sort("-price");
@@ -168,19 +165,25 @@ exports.getProductsAll = async (reqQuery) => {
     }
 
     const totalProducts = await Product.countDocuments(query);
+    console.log("Documents" + totalProducts);
+    // // skip
+    // // on 1 page  0-10
+    const skip = +pageNumber * +pageSize;
+    console.log("Skip" + skip);
+    // // if (skip < 0) skip = 5;
+    query = query.skip(skip).limit(+pageSize);
 
-    // skip
-    // on 1 page  0-10
-    const skip = (pageNumber - 1) * pageSize;
-
-    query = query.skip(skip).limit(pageSize);
-
-    // Now executing query at last
+    // // Now executing query at last
     const products = await query.exec();
     console.log(products);
-    const totalPages = Math.ceil(totalProducts / pageSize);
+    const totalPages = Math.ceil(totalProducts / +pageSize);
 
-    return { content: products, currentPage: pageNumber, totalPages };
+    return {
+      content: products,
+      currentPage: +pageNumber + 1,
+      totalPages,
+      totalProducts,
+    };
   } catch (err) {
     console.log(err);
     throw new Error(err);
