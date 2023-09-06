@@ -19,8 +19,8 @@ const ProductListCard = (props) => {
         <p className="text-normal text-gray-500 line-clamp-2">{description}</p>
         <div className="flex items-center gap-4  mt-2">
           <p className="font-semibold ">{price}</p>
-          <p className="opacity-50 line-through">800</p>
-          <p className="font-bold text-green-600 ">{discount}% off</p>
+          <p className="opacity-50 line-through">{price + 150}</p>
+          <p className="font-bold text-green-600 ">{discount + 10}% off</p>
         </div>
       </div>
     </div>

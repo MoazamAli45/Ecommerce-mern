@@ -43,14 +43,12 @@ export const getProductById = createAsyncThunk(
   "product/getById",
   async (id, thunkAPI) => {
     try {
-      const data = await api.get(`/api/v1/products/${id}`);
-      const product = await data.json();
-      if (product.status === "error" || product.status === "fail") {
-        throw new Error(product.message);
-      }
-      return product;
+      const product = await api.get(`/api/v1/products/${id}`);
+
+      console.log(product.data.data);
+      return product.data.data;
     } catch (err) {
-      return thunkAPI.rejectWithValue(err);
+      return thunkAPI.rejectWithValue(err.response.data.message);
     }
   }
 );

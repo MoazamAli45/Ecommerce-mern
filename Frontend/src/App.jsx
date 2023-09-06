@@ -3,7 +3,7 @@ import Layout from "./customer/components/Layout/Layout";
 
 import CustomerRoutes from "./customer/Routes/CustomerRoutes";
 import { Routes, Route } from "react-router-dom";
-
+// import { useSelector } from "react-redux";
 function App() {
   return (
     <>

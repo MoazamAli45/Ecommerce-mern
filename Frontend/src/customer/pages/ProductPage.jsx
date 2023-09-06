@@ -9,9 +9,10 @@ import {
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
 import ViewListIcon from "@mui/icons-material/ViewList";
-import { mensKurta } from "../Data/mensKurta";
+// import { mensKurta } from "../Data/mensKurta";
 import ProductCard from "../components/ProductCard/ProductCard";
 import ProductListCard from "../components/ProductCard/ProductListCard";
+
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -20,12 +21,14 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts } from "../../../store/productReducer";
-
+import { ToastContainer, toast } from "react-toastify";
+import Loading from "../components/Loading/Loading";
+import { Pagination } from "@mui/material";
 const sortOptions = [
-  { name: "Price: Low to High", href: "#", current: false },
-  { name: "Price: High to Low", href: "#", current: false },
+  { name: "Price: Low to High", value: "price_low_to_high", current: false },
+  { name: "Price: High to Low", value: "price_high_to_low", current: false },
 ];
 
 const filters = [
@@ -173,6 +176,9 @@ export default function ProductPage() {
   //    From redux toolkit
   const dispatch = useDispatch();
 
+  //  Accessing value of redux toolkit
+  const { error, isLoading, products } = useSelector((state) => state.product);
+
   // ADDING CHECKBOX QUERY ON URL
   const filterHandler = (sectionId, value) => {
     // console.log(sectionId, value);
@@ -215,6 +221,12 @@ export default function ProductPage() {
     const query = searchParams.toString();
     navigate({ search: `?${query}` });
   };
+  const sortHandler = (value) => {
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.set("sort", value);
+    const query = searchParams.toString();
+    navigate({ search: `?${query}` });
+  };
 
   const toggleGridViewHandler = () => {
     setGridView(!gridView);
@@ -233,6 +245,9 @@ export default function ProductPage() {
   const sort = searchParams.get("sort");
   const pageNumber = searchParams.get("pageNumber") || 1;
 
+  //   Now checking for authentication
+  const jwt = localStorage.getItem("jwt");
+
   // getting data
   useEffect(() => {
     const [minPrice, maxPrice] =
@@ -247,10 +262,11 @@ export default function ProductPage() {
       stock: stock || [],
       sort: sort || "price_high_to_low",
       pageNumber: pageNumber - 1,
-      pageSize: 5,
+      pageSize: 8,
     };
-
-    dispatch(getAllProducts(data));
+    if (jwt) {
+      dispatch(getAllProducts(data));
+    }
   }, [
     params.levelThree,
     price,
@@ -260,10 +276,23 @@ export default function ProductPage() {
     stock,
     sort,
     dispatch,
+    jwt,
   ]);
 
+  if (error) {
+    toast.error(error.message);
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center align-center h-[90vh]">
+        <Loading />
+      </div>
+    );
+  }
   return (
     <div className="bg-white">
+      <ToastContainer position="top-center" autoClose={2000} />
       <div>
         {/* Mobile filter dialog */}
         <Transition.Root show={mobileFiltersOpen} as={Fragment}>
@@ -490,7 +519,7 @@ export default function ProductPage() {
                         <Menu.Item key={option.name}>
                           {({ active }) => (
                             <a
-                              href={option.href}
+                              onClick={() => sortHandler(option.value)}
                               className={classNames(
                                 option.current
                                   ? "font-medium text-gray-900"
@@ -682,41 +711,78 @@ export default function ProductPage() {
               </div>
 
               {/* Product grid */}
-              {gridView ? (
-                <div className="lg:col-span-4    grid justify-items-center md:justify-items-start grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                  {mensKurta.map((product, i) => {
-                    return (
-                      <ProductCard
-                        key={i}
-                        image={product.imageLink}
-                        title={product.title}
-                        description={product.description}
-                        price={product.price}
-                        discount={product.discount}
-                        id={i}
-                      />
-                    );
-                  })}
-                </div>
-              ) : (
-                <div className="lg:col-span-4    grid grid-cols-1 gap-3">
-                  {mensKurta.map((product, i) => {
-                    return (
-                      <ProductListCard
-                        key={i}
-                        image={product.imageLink}
-                        title={product.title}
-                        description={product.description}
-                        price={product.price}
-                        discount={product.discount}
-                      />
-                    );
-                  })}
-                </div>
-              )}
+
+              {gridView
+                ? //                If not jwt and loading then it wil run
+
+                  jwt &&
+                  !isLoading && (
+                    <div className="lg:col-span-4    grid justify-items-center md:justify-items-start grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                      {products?.products?.content.length == 0 && (
+                        <div className="flex justify-center align-center ">
+                          <h1 className="text-2xl text-gray-900 font-bold ">
+                            No Product Found !
+                          </h1>
+                        </div>
+                      )}
+                      {products?.products?.content &&
+                        products?.products?.content.map((product, i) => {
+                          return (
+                            <ProductCard
+                              key={i}
+                              image={product.imageUrl}
+                              title={product.title}
+                              description={product.description}
+                              price={product.price}
+                              discount={product.discountPrice}
+                              id={product._id}
+                            />
+                          );
+                        })}
+                    </div>
+                  )
+                : jwt &&
+                  !isLoading && (
+                    <div className="lg:col-span-4    grid grid-cols-1 gap-3">
+                      {products?.products?.content.length == 0 && (
+                        <div className="flex justify-center align-center ">
+                          <h1 className="text-2xl text-gray-900 font-bold ">
+                            No Product Found !
+                          </h1>
+                        </div>
+                      )}
+                      {products?.products?.content &&
+                        products?.products?.content.map((product, i) => {
+                          return (
+                            <ProductListCard
+                              key={i}
+                              image={product.imageUrl}
+                              title={product.title}
+                              description={product.description}
+                              price={product.price}
+                              discount={product.discountPrice}
+                              id={product._id}
+                            />
+                          );
+                        })}
+                    </div>
+                  )}
             </div>
           </section>
         </main>
+        <div className="flex justify-center w-[50%] mx-auto md:w-[75%] md:ml-auto md:mr-4 shadow-lg my-5 border py-3 ">
+          <Pagination
+            count={products?.products?.totalPages}
+            page={pageNumber}
+            onChange={(e, value) => {
+              const searchParams = new URLSearchParams(window.location.search);
+              searchParams.set("pageNumber", value);
+              const query = searchParams.toString();
+              navigate({ search: `?${query}` });
+            }}
+            color={"primary"}
+          />
+        </div>
       </div>
     </div>
   );

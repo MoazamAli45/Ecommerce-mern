@@ -1,25 +1,4 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    theme: {
-      extend: {
-        gridTemplateRows: {
-          '[auto,auto,1fr]': 'auto auto 1fr',
-        },
-      },
-    },
-    plugins: [
-      // ...
-      require('@tailwindcss/aspect-ratio'),
-    ],
-  }
-  ```
-*/
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { RadioGroup } from "@headlessui/react";
 import { Rating, LinearProgress } from "@mui/material";
@@ -28,56 +7,59 @@ import ProductReviewCard from "../components/ProductReviewCard/ProductReviewCard
 
 import ShopCard from "../components/ShopCard/ShopCard";
 import { mensKurta } from "../Data/mensKurta";
-import { useNavigate } from "react-router-dom";
-
-const product = {
-  name: "Basic Tee 6-Pack",
-  price: "$192",
-  href: "#",
-  breadcrumbs: [
-    { id: 1, name: "Men", href: "#" },
-    { id: 2, name: "Clothing", href: "#" },
-  ],
-  images: [
-    {
-      src: "https://tailwindui.com/img/ecommerce-images/product-page-02-secondary-product-shot.jpg",
-      alt: "Two each of gray, white, and black shirts laying flat.",
-    },
-    {
-      src: "https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg",
-      alt: "Model wearing plain black basic tee.",
-    },
-    {
-      src: "https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg",
-      alt: "Model wearing plain gray basic tee.",
-    },
-    {
-      src: "https://tailwindui.com/img/ecommerce-images/product-page-02-featured-product-shot.jpg",
-      alt: "Model wearing plain white basic tee.",
-    },
-  ],
-  colors: [
-    { name: "White", class: "bg-white", selectedClass: "ring-gray-400" },
-    { name: "Gray", class: "bg-gray-200", selectedClass: "ring-gray-400" },
-    { name: "Black", class: "bg-gray-900", selectedClass: "ring-gray-900" },
-  ],
-  sizes: [
-    { name: "S", inStock: true },
-    { name: "M", inStock: true },
-    { name: "L", inStock: true },
-    { name: "XL", inStock: true },
-  ],
-  description:
-    'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.',
-  highlights: [
-    "Hand cut and sewn locally",
-    "Dyed with our proprietary colors",
-    "Pre-washed & pre-shrunk",
-    "Ultra-soft 100% cotton",
-  ],
-  details:
-    'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
-};
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getProductById } from "../../../store/productReducer";
+import { ToastContainer, toast } from "react-toastify";
+import Loading from "../components/Loading/Loading";
+// const product = {
+//   name: "Basic Tee 6-Pack",
+//   price: "$192",
+//   href: "#",
+//   breadcrumbs: [
+//     { id: 1, name: "Men", href: "#" },
+//     { id: 2, name: "Clothing", href: "#" },
+//   ],
+//   images: [
+//     {
+//       src: "https://tailwindui.com/img/ecommerce-images/product-page-02-secondary-product-shot.jpg",
+//       alt: "Two each of gray, white, and black shirts laying flat.",
+//     },
+//     {
+//       src: "https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg",
+//       alt: "Model wearing plain black basic tee.",
+//     },
+//     {
+//       src: "https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg",
+//       alt: "Model wearing plain gray basic tee.",
+//     },
+//     {
+//       src: "https://tailwindui.com/img/ecommerce-images/product-page-02-featured-product-shot.jpg",
+//       alt: "Model wearing plain white basic tee.",
+//     },
+//   ],
+//   colors: [
+//     { name: "White", class: "bg-white", selectedClass: "ring-gray-400" },
+//     { name: "Gray", class: "bg-gray-200", selectedClass: "ring-gray-400" },
+//     { name: "Black", class: "bg-gray-900", selectedClass: "ring-gray-900" },
+//   ],
+//   sizes: [
+//     { name: "S", inStock: true },
+//     { name: "M", inStock: true },
+//     { name: "L", inStock: true },
+//     { name: "XL", inStock: true },
+//   ],
+//   description:
+//     'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.',
+//   highlights: [
+//     "Hand cut and sewn locally",
+//     "Dyed with our proprietary colors",
+//     "Pre-washed & pre-shrunk",
+//     "Ultra-soft 100% cotton",
+//   ],
+//   details:
+//     'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
+// };
 const reviews = { href: "#", average: 4, totalCount: 117 };
 
 function classNames(...classes) {
@@ -85,28 +67,52 @@ function classNames(...classes) {
 }
 
 export default function ProductDetailPage() {
-  const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const params = useParams();
+
+  //  useSelector for accessing value of redux toolkit
+  const { product, isLoading, error } = useSelector((state) => state.product);
+  const [selectedSize, setSelectedSize] = useState("");
+  // console.log(selectedSize);
+  useEffect(() => {
+    dispatch(getProductById(params.productId));
+  }, [dispatch, params.productId]);
 
   const navigateHandler = () => {
     navigate("/cart");
   };
+
+  if (error) {
+    toast.error(error.message);
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center align-center h-[90vh]">
+        <Loading />
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white w-[90%] mx-auto my-4">
+      <ToastContainer position="top-center" autoClose={2000} />
       <div className="pt-6">
         <nav aria-label="Breadcrumb">
           <ol
             role="list"
             className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8"
           >
-            {product.breadcrumbs.map((breadcrumb) => (
-              <li key={breadcrumb.id}>
+            {product?.product?.category?.map((breadcrumb, id) => (
+              <li key={id}>
                 <div className="flex items-center">
                   <a
-                    href={breadcrumb.href}
+                    href={"/"}
                     className="mr-2 text-sm font-medium text-gray-900"
                   >
-                    {breadcrumb.name}
+                    {breadcrumb.name[0].toUpperCase() +
+                      breadcrumb.name.slice(1)}
                   </a>
                   <svg
                     width={16}
@@ -123,11 +129,11 @@ export default function ProductDetailPage() {
             ))}
             <li className="text-sm">
               <a
-                href={product.href}
+                href={"/"}
                 aria-current="page"
                 className="font-medium text-gray-500 hover:text-gray-600"
               >
-                {product.name}
+                {product?.product?.name}
               </a>
             </li>
           </ol>
@@ -137,12 +143,12 @@ export default function ProductDetailPage() {
           <div className=" lg:flex flex-col items-center px-4">
             <div className="  overflow-hidden rounded-lg lg:block  max-w-[27rem] max-h-[27rem]">
               <img
-                src={product.images[0].src}
-                alt={product.images[0].alt}
+                src={product?.product?.imageUrl}
+                alt={product?.product?.name}
                 className="h-full w-full object-cover object-center"
               />
             </div>
-            <div className="hidden  lg:flex justify-center gap-x-4 mt-4">
+            {/* <div className="hidden  lg:flex justify-center gap-x-4 mt-4">
               {product.images.map((image, i) => (
                 <div
                   key={i}
@@ -155,14 +161,14 @@ export default function ProductDetailPage() {
                   />
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
 
           {/* Product info */}
           <div className="  px-4 pb-16 pt-10 sm:px-6    flex flex-col  lg:px-8 lg:pb-24 lg:pt-16 ">
             <div className=" lg:border-r  lg:pr-8">
               <h1 className="text-2xl font-bold tracking-tight text-gray-900 ">
-                {product.name}
+                {product?.product?.name}
               </h1>
             </div>
 
@@ -173,13 +179,17 @@ export default function ProductDetailPage() {
 
                 <div className="space-y-6">
                   <p className="text-normal text-gray-900  opacity-60">
-                    Casual Puff Sleves Sold Women White Top
+                    {product?.product?.description}
                   </p>
                   {/*    prices */}
                   <div className="flex gap-x-2 space-x-5 text-lg font-semibold">
-                    <p className="text-semibold">Rs 200</p>
-                    <p className="line-through opacity-60 ">Rs 300</p>
-                    <p className="text-green-500">10% off</p>
+                    <p className="text-semibold">Rs {product?.product?.price}</p>
+                    <p className="line-through opacity-60 ">
+                      Rs {product?.product?.price + 150}
+                    </p>cd 
+                    <p className="text-green-500">
+                      {product?.product?.discountPercent + 10}% off
+                    </p>
                   </div>
                 </div>
               </div>
@@ -215,27 +225,30 @@ export default function ProductDetailPage() {
                       Choose a size
                     </RadioGroup.Label>
                     <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
-                      {product.sizes.map((size) => (
+                      {product?.product?.sizes?.map((size) => (
                         <RadioGroup.Option
                           key={size.name}
-                          value={size}
-                          disabled={!size.inStock}
+                          value={size.name}
+                          disabled={!size.quantity > 0}
                           className={({ active }) =>
                             classNames(
-                              size.inStock
+                              size.quantity > 0
                                 ? "cursor-pointer bg-white text-gray-900 shadow-sm"
                                 : "cursor-not-allowed bg-gray-50 text-gray-200",
                               active ? "ring-2 ring-indigo-500" : "",
                               "group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6"
                             )
                           }
+                          // className={
+                          //   "ring-2 ring-indigo-500 group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6"
+                          // }
                         >
                           {({ active, checked }) => (
                             <>
                               <RadioGroup.Label as="span">
                                 {size.name}
                               </RadioGroup.Label>
-                              {size.inStock ? (
+                              {size.quantity > 0 ? (
                                 <span
                                   className={classNames(
                                     active ? "border" : "border-2",
