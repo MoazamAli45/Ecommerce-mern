@@ -1,18 +1,52 @@
 import { useNavigate } from "react-router-dom";
 import CheckoutCard from "../components/CheckoutCard/CheckoutCard";
 import { Button } from "@mui/material";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getCart } from "../../../store/cartReducer";
+import Loading from "./../components/Loading/Loading";
+import { ToastContainer, toast } from "react-toastify";
+import EmptyCart from "../components/EmptyCart/EmptyCart";
 
 const CartSection = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { cart, isLoading, error } = useSelector((state) => state.cart);
+  // console.log(cart);
+  //  fetching data
+  useEffect(() => {
+    dispatch(getCart());
+  }, [dispatch]);
 
   const navigateHandler = () => {
     navigate("/checkout?step=2");
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center align-center h-[90vh]">
+        <Loading />
+      </div>
+    );
+  }
+  if (error) {
+    toast.error(error);
+  }
+
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 my-4 w-[95%] mx-auto  gap-5">
       <div className=" col-span-1 lg:col-span-2 flex flex-col gap-4">
-        {[1, 1, 1].map((item, i) => (
-          <CheckoutCard key={i} />
+        <ToastContainer position="top-center" autoClose={2000} />
+        {cart?.cart?.cartItems?.length === 0 && (
+          // <div className="flex ">
+          //   <h1 className="text-2xl text-gray-900 font-bold">Cart is empty!</h1>
+          // </div>
+
+          <EmptyCart />
+        )}
+        {cart?.cart?.cartItems?.map((item) => (
+          <CheckoutCard item={item} key={item._id} />
         ))}
       </div>
       {/*   Checkout Form Card */}
@@ -20,11 +54,13 @@ const CartSection = () => {
         <h5 className="text-lg font-semibold opacity-60 ">Price Details</h5>
         <div className="flex justify-between">
           <h5 className="text-lg font-bold">Price</h5>
-          <h5 className="text-lg font-bold">Rs4567</h5>
+          <h5 className="text-lg font-bold">Rs {cart?.cart?.totalPrice}</h5>
         </div>
         <div className="flex justify-between">
           <p className="text-lg ">Discount</p>
-          <p className="text-lg text-green-500 font-semibold">-Rs400</p>
+          <p className="text-lg text-green-500 font-semibold">
+            -Rs {cart?.cart?.totalDiscountPrice}
+          </p>
         </div>
         <div className="flex justify-between">
           <p className="text-lg ">Delivery Charges</p>
@@ -32,16 +68,18 @@ const CartSection = () => {
         </div>
         <div className="flex justify-between">
           <h5 className="text-lg font-bold">Total Amount</h5>
-          <h5 className="text-lg font-bold">Rs4123</h5>
+          <h5 className="text-lg font-bold">
+            Rs{cart?.cart?.totalPrice - cart?.cart?.totalDiscountPrice}
+          </h5>
         </div>
         <Button
           variant="contained"
           sx={{
-            backgroundColor: "#974EC3",
+            backgroundColor: "#9155FD",
             color: "#fff",
             transition: "all 0.3s ease-in-out",
             "&:hover": {
-              backgroundColor: "#974EC3",
+              backgroundColor: "#9155FE",
             },
           }}
           onClick={navigateHandler}

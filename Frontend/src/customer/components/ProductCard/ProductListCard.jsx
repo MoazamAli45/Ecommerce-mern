@@ -1,7 +1,7 @@
 import "./ProductCard.css";
 
 const ProductListCard = (props) => {
-  const { image, price, discount, title, description } = props;
+  const { image, price, discountPrice, discount, title, description } = props;
 
   // Not of grid
 
@@ -18,9 +18,9 @@ const ProductListCard = (props) => {
         <h4 className="font-bold text-lg text-gray-900">{title}</h4>
         <p className="text-normal text-gray-500 line-clamp-2">{description}</p>
         <div className="flex items-center gap-4  mt-2">
-          <p className="font-semibold ">{price}</p>
-          <p className="opacity-50 line-through">{price + 150}</p>
-          <p className="font-bold text-green-600 ">{discount + 10}% off</p>
+          <p className="font-semibold ">{price - discountPrice}</p>
+          <p className="opacity-50 line-through">{price}</p>
+          <p className="font-bold text-green-600 ">{discount}% off</p>
         </div>
       </div>
     </div>

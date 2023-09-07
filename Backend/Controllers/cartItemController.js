@@ -1,9 +1,12 @@
 const CartItemService = require("../services/cartItemService");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
+
 exports.updateCartItem = catchAsync(async (req, res) => {
   const user = req.user;
   const { productId } = req.params;
+
+  console.log("Form " + req.body);
   try {
     const cartItem = await CartItemService.updateCartItem(
       user._id,
@@ -18,7 +21,7 @@ exports.updateCartItem = catchAsync(async (req, res) => {
       },
     });
   } catch (err) {
-    throw new AppError(err.message);
+    throw new AppError(err.message, 400);
   }
 });
 
@@ -31,7 +34,7 @@ exports.removeCartItem = catchAsync(async (req, res) => {
     res.status(200).json({
       status: "success",
       data: {
-        message: "Item Removed Successfully!",
+        cartItem,
       },
     });
   } catch (err) {

@@ -12,14 +12,15 @@ export const addToCart = createAsyncThunk(
   "cart/addToCart",
   async (data, thunkAPI) => {
     try {
-      const data = await api.post(`/api/v1/carts`, data);
-      const cart = await data.json();
+      console.log(data);
+      const cart = await api.post(`/api/v1/carts`, data);
 
-      if (cart.status === "fail" || cart.status === "error") {
-        throw new Error(cart.message);
-      }
+      console.log(cart.data.data);
+
+      return cart.data.data;
     } catch (err) {
-      return thunkAPI.rejectWithValue(err);
+      console.log(err.response.data.message);
+      return thunkAPI.rejectWithValue(err.response.data.message);
     }
   }
 );
@@ -27,54 +28,45 @@ export const addToCart = createAsyncThunk(
 export const updateCartItem = createAsyncThunk(
   "cart/updateCart",
   async (reqData, thunkAPI) => {
+    console.log(reqData);
     try {
-      const data = await api.patch(
+      const cartItem = await api.patch(
         `/api/v1/cartItems/${reqData.cartItemId}`,
-        reqData.data
+        +reqData.data
       );
-      const cartItem = await data.json();
-      if (cartItem.status === "fail" || cartItem.status === "error") {
-        throw new Error(cartItem.message);
-      }
-      return cartItem;
+      console.log(cartItem.data.data);
+      return cartItem.data.data;
     } catch (err) {
-      return thunkAPI.rejectWithValue(err);
+      console.log(err.response.data.message);
+      return thunkAPI.rejectWithValue(err.response.data.message);
     }
   }
 );
 export const removeCartItem = createAsyncThunk(
   "cart/removeFromCart",
-  async (data, thunkAPI) => {
+  async (cartItemId, thunkAPI) => {
     try {
-      const data = await api.delete(`/api/v1/cartItems/${data.cartItemId}`);
-      const cartItem = await data.json();
+      const cartItem = await api.delete(`/api/v1/cartItems/${cartItemId}`);
 
-      if (cartItem.status === "fail" || cartItem.status === "error") {
-        throw new Error(cartItem.message);
-      }
-      return cartItem;
+      console.log(cartItem.data.data._id);
+      return cartItem.data.data._id;
     } catch (err) {
-      return thunkAPI.rejectWithValue(err);
+      console.log(err.response.data.message);
+      return thunkAPI.rejectWithValue(err.response.data.message);
     }
   }
 );
-export const getCart = createAsyncThunk(
-  "cart/getCart",
-  async (data, thunkAPI) => {
-    try {
-      const data = await api.get(`/api/v1/carts`);
+export const getCart = createAsyncThunk("cart/getCart", async (_, thunkAPI) => {
+  try {
+    const carts = await api.get(`/api/v1/carts`);
 
-      const carts = await data.json();
-
-      if (carts.status === "fail" || carts.status === "error") {
-        throw new Error(carts.message);
-      }
-      return carts;
-    } catch (err) {
-      return thunkAPI.rejectWithValue(err);
-    }
+    console.log(carts.data.data);
+    return carts.data.data;
+  } catch (err) {
+    console.log(err.response.data.message);
+    return thunkAPI.rejectWithValue(err.response.data.message);
   }
-);
+});
 
 const cartSlice = createSlice({
   name: "cart",
@@ -120,7 +112,7 @@ const cartSlice = createSlice({
       //  action.payload is id of cartItem
       .addCase(removeCartItem.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.cartItems = state.cartItems.filter(
+        state.cartItems = state.cartItems?.filter(
           (item) => item._id !== action.payload
         );
       })

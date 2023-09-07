@@ -16,15 +16,19 @@ exports.createCart = async (user) => {
 // Find Cart by ID
 exports.findUserCartById = async (userId) => {
   try {
+    // if(req.user)
+    // console.log(req.user);
     const cart = await Cart.findOne({ user: userId });
-
-    const cartItems = await CartItem.find({ cart: cart._id }).populate(
-      "products"
-    );
+    const cartItems = await CartItem.find({ cart: cart._id })
+      .populate("products")
+      .populate({
+        path: "userId",
+        select: "firstName lastName email",
+      });
 
     // Now assigning in database
     cart.cartItems = cartItems;
-
+    // console.log(cart);
     // now adding price
     let totalPrice = 0;
     let totalDiscountedPrice = 0;
@@ -32,9 +36,10 @@ exports.findUserCartById = async (userId) => {
 
     // Counting for cartItems
     for (let cartItem of cart.cartItems) {
-      totalPrice = cartItem.price;
-      totalDiscountedPrice = cartItem.discountPrice;
-      totalItems = cartItem.quantity;
+      console.log(cartItem.discountPrice);
+      totalPrice += cartItem.price;
+      totalDiscountedPrice += cartItem.discountPrice;
+      totalItems += cartItem.quantity;
     }
 
     // Now assigning in DB
@@ -45,12 +50,14 @@ exports.findUserCartById = async (userId) => {
 
     return cart;
   } catch (err) {
+    console.log(err);
     throw new Error(err.message);
   }
 };
 
 // add Cart Item
-exports.addCartItem = async (userId, req) => {
+exports.addItemCart = async (userId, req) => {
+  console.log(req);
   try {
     const cart = await Cart.findOne({ user: userId });
     // Now finding product by using Id
@@ -76,9 +83,10 @@ exports.addCartItem = async (userId, req) => {
 
       await cart.save();
 
-      return "Item added Successfully";
+      return cart;
     }
   } catch (err) {
+    console.log(err);
     throw new Error(err.message);
   }
 };

@@ -9,7 +9,7 @@ const cartItemSchema = new mongoose.Schema({
   ],
   products: [{ type: mongoose.Schema.Types.ObjectId, ref: "products" }],
   size: {
-    type: Number,
+    type: String,
     required: [true, "Please provide Size"],
   },
   quantity: {

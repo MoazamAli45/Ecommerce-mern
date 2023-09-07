@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { registerUser, reset } from "../../../../store/authReducer";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import Spinner from "../Spinner/Spinner";
 export default function LoginForm() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -186,7 +187,11 @@ export default function LoginForm() {
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                {isLoading && "Submiting ..."}
+                {isLoading && (
+                  <span className="flex gap-2">
+                    <Spinner /> Submitting...
+                  </span>
+                )}
                 {!isLoading && "Register"}
               </button>
             </div>

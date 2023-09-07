@@ -13,7 +13,7 @@ exports.getUserCart = catchAsync(async (req, res) => {
       },
     });
   } catch (err) {
-    throw new Error(err.mssage, 500);
+    throw new AppError(err.mssage, 500);
   }
 });
 
@@ -28,6 +28,6 @@ exports.addItemToCart = catchAsync(async (req, res) => {
       },
     });
   } catch (err) {
-    throw new Error(err.mssage, 500);
+    throw new AppError(err.mssage, 500);
   }
 });

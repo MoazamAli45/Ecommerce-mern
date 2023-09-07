@@ -19,5 +19,6 @@ module.exports = {
   },
   rules: {
     "react/prop-types": "off", // Turn off the prop-types rule
+    "react/display-name": "off",
   },
 };

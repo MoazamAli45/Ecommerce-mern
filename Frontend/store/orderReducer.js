@@ -104,4 +104,4 @@ const orderSlice = createSlice({
       }),
 });
 
-exports default orderSlice.reducer;
+export default orderSlice.reducer;

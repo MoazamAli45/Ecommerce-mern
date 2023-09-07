@@ -3,7 +3,7 @@ const Cart = require("../Model/cartModel");
 const User = require("../Model/userModel");
 const AppError = require("../utils/appError");
 
-exports.updateCartItem = async (userId, cartItemId, cartItemData) => {
+exports.updateCartItem = async (userId, cartItemId, data) => {
   try {
     const item = await CartItem.findById(cartItemId);
 
@@ -14,13 +14,16 @@ exports.updateCartItem = async (userId, cartItemId, cartItemData) => {
     if (!user) {
       throw new Error("User not found");
     }
+    console.log("item" + item);
 
     if (user._id.toString() === item.userId.toString()) {
-      item.quantity = cartItemData.quantity;
-      item.price = item.quantity * cartItemData.price;
-      item.discountPrice = item.quantity * item.product.discountPrice;
+      item.quantity = +data.quantity;
+      item.price = item.quantity * +data.price;
+      item.discountPrice = item.quantity * item.discountPrice;
 
       const updatedItem = await item.save();
+
+      console.log("updatedItem" + updatedItem);
       return updatedItem;
     } else {
       // Our generated Error
@@ -49,7 +52,8 @@ exports.removeCartItem = async (userId, cartItemId) => {
 
     if (user._id.toString() === item.userId.toString()) {
       await item.remove();
-      return "Cart Item removed Successfully";
+      console.log(item);
+      return item;
     } else {
       // Our generated Error
       throw new AppError(

@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import { RadioGroup } from "@headlessui/react";
-import { Rating, LinearProgress } from "@mui/material";
+import { Rating, LinearProgress, TextField } from "@mui/material";
 
 import ProductReviewCard from "../components/ProductReviewCard/ProductReviewCard";
 
@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProductById } from "../../../store/productReducer";
 import { ToastContainer, toast } from "react-toastify";
 import Loading from "../components/Loading/Loading";
+import { addToCart, getCart } from "../../../store/cartReducer";
 // const product = {
 //   name: "Basic Tee 6-Pack",
 //   price: "$192",
@@ -75,11 +76,27 @@ export default function ProductDetailPage() {
   const { product, isLoading, error } = useSelector((state) => state.product);
   const [selectedSize, setSelectedSize] = useState("");
   // console.log(selectedSize);
+  const quantityRef = useRef();
+
   useEffect(() => {
     dispatch(getProductById(params.productId));
   }, [dispatch, params.productId]);
 
-  const navigateHandler = () => {
+  const navigateHandler = (e) => {
+    e.preventDefault();
+    if (!selectedSize) {
+      toast.error("Please select a size");
+      return;
+    }
+    const quantity = quantityRef.current.value;
+    if (!quantity) {
+      toast.error("Please enter quantity");
+      return;
+    }
+
+    const data = { productId: params.productId, size: selectedSize, quantity };
+    dispatch(addToCart(data));
+    dispatch(getCart());
     navigate("/cart");
   };
 
@@ -168,7 +185,7 @@ export default function ProductDetailPage() {
           <div className="  px-4 pb-16 pt-10 sm:px-6    flex flex-col  lg:px-8 lg:pb-24 lg:pt-16 ">
             <div className=" lg:border-r  lg:pr-8">
               <h1 className="text-2xl font-bold tracking-tight text-gray-900 ">
-                {product?.product?.name}
+                {product?.product?.title}
               </h1>
             </div>
 
@@ -183,12 +200,16 @@ export default function ProductDetailPage() {
                   </p>
                   {/*    prices */}
                   <div className="flex gap-x-2 space-x-5 text-lg font-semibold">
-                    <p className="text-semibold">Rs {product?.product?.price}</p>
+                    <p className="text-semibold">
+                      Rs{" "}
+                      {product?.product?.price -
+                        product?.product?.discountPrice}
+                    </p>
                     <p className="line-through opacity-60 ">
-                      Rs {product?.product?.price + 150}
-                    </p>cd 
+                      Rs {product?.product?.price}
+                    </p>
                     <p className="text-green-500">
-                      {product?.product?.discountPercent + 10}% off
+                      {product?.product?.discountPercent}% off
                     </p>
                   </div>
                 </div>
@@ -287,7 +308,17 @@ export default function ProductDetailPage() {
                     </div>
                   </RadioGroup>
                 </div>
-
+                <div className="mt-5">
+                  <TextField
+                    type="number"
+                    label="Quantity"
+                    variant="outlined"
+                    className="w-[25%]"
+                    defaultValue={1}
+                    InputProps={{ inputProps: { min: 1 } }}
+                    inputRef={quantityRef}
+                  />
+                </div>
                 <button
                   type="submit"
                   className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-purple-600 px-8 py-3 text-base font-medium text-white hover:bg-pruple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"

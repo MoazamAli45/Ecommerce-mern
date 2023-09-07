@@ -35,10 +35,18 @@ app.use(mongoSanitize());
 app.use(xss());
 
 app.use(helmet());
+// const allowedOrigins = ["http://localhost:5173"];
+// app.use(
+//   cors({
+//     origin: allowedOrigins,
+//     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//     credentials: true,
+//     optionsSuccessStatus: 204,
+//   })
+// );
 
 app.use(cors());
-
-app.options("*", cors());
+// app.options("*", cors());
 
 app.get("/", (req, res) => {
   res.status(200).json({

@@ -9,7 +9,7 @@ import {
 import { Avatar, Button } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-
+import { Link } from "react-router-dom";
 import logo from "/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -599,7 +599,7 @@ export default function MainNavigation() {
                 </div>
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6">
-                  <a href="#" className="group -m-2 flex items-center p-2">
+                  <Link to="/cart" className="group -m-2 flex items-center p-2">
                     <ShoppingBagIcon
                       className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                       aria-hidden="true"
@@ -607,8 +607,8 @@ export default function MainNavigation() {
                     <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
                       0
                     </span>
-                    <span className="sr-only">items in cart, view bag</span>
-                  </a>
+                    {/* <span className="sr-only">items in cart, view bag</span> */}
+                  </Link>
                 </div>
               </div>
             </div>
