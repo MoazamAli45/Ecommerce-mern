@@ -37,8 +37,8 @@ exports.findUserCartById = async (userId) => {
     // Counting for cartItems
     for (let cartItem of cart.cartItems) {
       console.log(cartItem.discountPrice);
-      totalPrice += cartItem.price;
-      totalDiscountedPrice += cartItem.discountPrice;
+      totalPrice += cartItem.totalPrice;
+      totalDiscountedPrice += cartItem.totalDiscountPrice;
       totalItems += cartItem.quantity;
     }
 
@@ -57,7 +57,7 @@ exports.findUserCartById = async (userId) => {
 
 // add Cart Item
 exports.addItemCart = async (userId, req) => {
-  console.log(req);
+  // console.log(req);
   try {
     const cart = await Cart.findOne({ user: userId });
     // Now finding product by using Id
@@ -74,14 +74,17 @@ exports.addItemCart = async (userId, req) => {
         products: product._id,
         size: req.size,
         quantity: req.quantity,
+        totalPrice: product.price * req.quantity,
         price: product.price,
         discountPrice: product.discountPrice,
+        totalDiscountPrice: product.discountPrice * req.quantity,
         userId: userId,
       });
       const createdCartItem = await cartItem.save();
       cart.cartItems.push(createdCartItem);
 
       await cart.save();
+      console.log("Added" + cart);
 
       return cart;
     }

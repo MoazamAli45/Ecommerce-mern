@@ -3,32 +3,44 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { removeCartItem, updateCartItem } from "../../../../store/cartReducer";
-import { useNavigate } from "react-router-dom";
-// import { useNavigate } from "react-router-dom";
+import {
+  removeCartItem,
+  updateCartItem,
+  getCart,
+} from "../../../../store/cartReducer";
+
 const CheckoutCard = (item) => {
-  const [quantity, setQuantity] = useState(item.item.quantity);
   const [removeButtonClick, setRemoveButtonClick] = useState(false);
-  // console.log(item);
+
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+
   // const location = useLocation();
   const handleUpdateHandler = (num) => {
-    setQuantity(quantity + num);
-    setTimeout(() => {
-      // console.log(quantity);
-      const reqData = {
-        data: { quantity },
-        cartItemId: item?.item?._id,
-      };
+    let sign;
+    if (num === 1) {
+      sign = "+";
+    } else {
+      sign = "-";
+    }
+    const reqData = {
+      data: { quantity: item.item.quantity + num, sign },
+      cartItemId: item?.item?._id,
+    };
 
-      dispatch(updateCartItem(reqData));
+    // console.log(reqData);
+    dispatch(updateCartItem(reqData));
+    // setUpdateButtonClick(true);
+    setTimeout(() => {
+      dispatch(getCart());
     }, 1000);
   };
 
   useEffect(() => {
     if (removeButtonClick) {
       dispatch(removeCartItem(item?.item?._id));
+      setTimeout(() => {
+        dispatch(getCart());
+      }, 1000);
     }
   }, [removeButtonClick, dispatch, item?.item?._id]);
 
@@ -80,10 +92,10 @@ const CheckoutCard = (item) => {
         <div className="flex items-center gap-3 my-2">
           <RemoveCircleOutlineIcon
             className="text-2xl text-gray-500 cursor-pointer "
-            disabled={quantity <= 0}
+            disabled={item.item.quantity <= 0}
             onClick={() => handleUpdateHandler(-1)}
           />
-          <span className="border px-5 py-1">{quantity}</span>
+          <span className="border px-5 py-1">{item.item.quantity}</span>
           <AddCircleOutlineIcon
             className="text-2xl text-purple-500 cursor-pointer"
             onClick={() => handleUpdateHandler(1)}

@@ -5,6 +5,6 @@ const cartItemController = require("../Controllers/cartItemController");
 
 router.use(authController.protect);
 
-router.patch("/:productId", cartItemController.updateCartItem);
+router.put("/:productId", cartItemController.updateCartItem);
 router.delete("/:productId", cartItemController.removeCartItem);
 module.exports = router;

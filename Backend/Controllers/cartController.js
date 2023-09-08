@@ -21,6 +21,7 @@ exports.addItemToCart = catchAsync(async (req, res) => {
   const user = req.user;
   try {
     const cart = await CartService.addItemCart(user._id, req.body);
+    console.log("controller" + cart);
     res.status(200).json({
       status: "success",
       data: {
@@ -28,6 +29,7 @@ exports.addItemToCart = catchAsync(async (req, res) => {
       },
     });
   } catch (err) {
+    console.log(err);
     throw new AppError(err.mssage, 500);
   }
 });

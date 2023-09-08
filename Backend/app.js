@@ -46,7 +46,7 @@ app.use(helmet());
 // );
 
 app.use(cors());
-// app.options("*", cors());
+app.options("*", cors());
 
 app.get("/", (req, res) => {
   res.status(200).json({

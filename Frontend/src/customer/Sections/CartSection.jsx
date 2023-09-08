@@ -13,10 +13,12 @@ const CartSection = () => {
   const dispatch = useDispatch();
 
   const { cart, isLoading, error } = useSelector((state) => state.cart);
-  // console.log(cart);
+  console.log(cart);
   //  fetching data
   useEffect(() => {
-    dispatch(getCart());
+    setTimeout(() => {
+      dispatch(getCart());
+    }, 500);
   }, [dispatch]);
 
   const navigateHandler = () => {

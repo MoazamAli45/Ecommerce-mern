@@ -14,12 +14,20 @@ exports.updateCartItem = async (userId, cartItemId, data) => {
     if (!user) {
       throw new Error("User not found");
     }
-    console.log("item" + item);
+    console.log("item" + data.quantity);
 
     if (user._id.toString() === item.userId.toString()) {
-      item.quantity = +data.quantity;
-      item.price = item.quantity * +data.price;
-      item.discountPrice = item.quantity * item.discountPrice;
+      if (data.sign === "+") {
+        item.quantity += 1;
+        item.totalPrice = item.totalPrice + item.price;
+        // console.log(item.price);
+        item.totalDiscountPrice = item.totalDiscountPrice + item.discountPrice;
+      } else if (data.sign === "-") {
+        item.quantity -= 1;
+        item.totalPrice = item.totalPrice - item.price;
+        // console.log(item.price);
+        item.totalDiscountPrice = item.totalDiscountPrice - item.discountPrice;
+      }
 
       const updatedItem = await item.save();
 

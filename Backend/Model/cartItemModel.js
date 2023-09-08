@@ -12,6 +12,8 @@ const cartItemSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please provide Size"],
   },
+  totalPrice: Number,
+  totalDiscountPrice: Number,
   quantity: {
     type: Number,
     required: [true, "Please provide Quantity"],

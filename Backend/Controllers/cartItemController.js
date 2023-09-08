@@ -21,6 +21,7 @@ exports.updateCartItem = catchAsync(async (req, res) => {
       },
     });
   } catch (err) {
+    console.log(err);
     throw new AppError(err.message, 400);
   }
 });

@@ -7,6 +7,7 @@ import ProductReviewCard from "../components/ProductReviewCard/ProductReviewCard
 
 import ShopCard from "../components/ShopCard/ShopCard";
 import { mensKurta } from "../Data/mensKurta";
+import { womenSaree } from "../Data/womenSaree";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductById } from "../../../store/productReducer";
@@ -427,16 +428,29 @@ export default function ProductDetailPage() {
         <section className="mt-16 lg:mt-24">
           <h2 className="font-bold text-xl text-gray-900">Similar Products</h2>
           <div className="shadow-lg grid  grid-cols-1 justify-items-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 my-5 p-7 gap-y-5">
-            {mensKurta.map((item, index) => {
-              return (
-                <ShopCard
-                  key={index}
-                  image={item.imageLink}
-                  title={item.title}
-                  description={item.description}
-                />
-              );
-            })}
+            {/*   If men Category then men products other wise woman */}
+            {product?.product?.category[0].name === "men" &&
+              mensKurta.map((item, index) => {
+                return (
+                  <ShopCard
+                    key={index}
+                    image={item.imageLink}
+                    title={item.title}
+                    description={item.description}
+                  />
+                );
+              })}
+            {product?.product?.category[0].name === "women" &&
+              womenSaree.map((item, index) => {
+                return (
+                  <ShopCard
+                    key={index}
+                    image={item.imageLink}
+                    title={item.title}
+                    description={item.description}
+                  />
+                );
+              })}
           </div>
         </section>
       </div>
