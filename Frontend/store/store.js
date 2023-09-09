@@ -4,11 +4,13 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./authReducer";
 import productReducer from "./productReducer";
 import cartReducer from "./cartReducer";
+import orderReducer from "./orderReducer";
 export const store = configureStore({
   // we can update  with the help of  reducer
   reducer: {
     auth: authReducer,
     product: productReducer,
     cart: cartReducer,
+    order: orderReducer,
   },
 });

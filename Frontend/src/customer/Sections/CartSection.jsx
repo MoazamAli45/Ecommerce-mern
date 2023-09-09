@@ -8,21 +8,27 @@ import Loading from "./../components/Loading/Loading";
 import { ToastContainer, toast } from "react-toastify";
 import EmptyCart from "../components/EmptyCart/EmptyCart";
 
-const CartSection = () => {
+const CartSection = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { cart, isLoading, error } = useSelector((state) => state.cart);
-  console.log(cart);
+  // console.log(cart);
   //  fetching data
   useEffect(() => {
     setTimeout(() => {
       dispatch(getCart());
     }, 500);
+
+    return () => {
+      clearTimeout();
+    };
   }, [dispatch]);
 
+  let navigateTo = props.navigate || "/checkout?step=2";
+
   const navigateHandler = () => {
-    navigate("/checkout?step=2");
+    navigate(navigateTo);
   };
 
   if (isLoading) {

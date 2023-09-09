@@ -1,58 +1,86 @@
 const Address = require("../Model/addressModel");
+const User = require("../Model/userModel");
 const Cart = require("../Model/cartModel");
 const OrderItem = require("../Model/orderItemModel");
 const Order = require("../Model/orderModel");
 // Create Order
-exports.createOrder = async (user, shipAddress) => {
+exports.createOrder = async (userId, shipAddress) => {
+  console.log(shipAddress);
   try {
     let address;
     // if already present Address
+    const user = await User.findById(userId);
     if (shipAddress._id) {
       const existingAddress = await Address.findById(shipAddress._id);
       address = existingAddress;
     } else {
       address = new Address({
-        shipAddress,
+        firstName: shipAddress.firstName,
+        lastName: shipAddress.lastName,
+        address: shipAddress.address,
+        city: shipAddress.city,
+        state: shipAddress.state,
+        zipCode: shipAddress.zipCode,
+        mobile: shipAddress.mobile,
       });
+      // address.shipAddress = shipAddress;
       address.user = user;
-      await address.save();
+      await address.save({
+        validateBeforeSave: false,
+      });
 
+      // console.log(address, "address");
       // Now adding in user
-      user.addresses.push(address);
-      await user.save();
+      user.address.push(address);
+      await user.save({
+        validateBeforeSave: false,
+      });
     }
-
     //          Now finding cart with that user
-    const cart = await Cart.findOne({ user: user._id });
+    const cart = await Cart.findOne({ user: userId }).populate("cartItems");
     let orderItems = [];
-
+    console.log(cart);
     for (let cartItem of cart.cartItems) {
       // now creating orderItem
       const orderItem = new OrderItem({
         product: cartItem.product,
         size: cartItem.size,
         quantity: cartItem.quantity,
-        price: cartItem.price,
-        discountPrice: cartItem.discountPrice,
+        price: cartItem.totalPrice,
+        discountPrice: cartItem.totalDiscountPrice,
         userId: user._id,
       });
 
       const createdOrderItem = await orderItem.save();
       orderItems.push(createdOrderItem);
     }
+
+    //     For Order Total Price
+    let OrderTotalPrice = 0;
+    let OrderTotalDiscountPrice = 0;
+    let OrderTotalItems = 0;
+
+    for (let orderItem of orderItems) {
+      OrderTotalPrice += orderItem.price;
+      OrderTotalDiscountPrice += orderItem.discountPrice;
+      OrderTotalItems += orderItem.quantity;
+    }
+
     // Now creatinf Order
     const createdOrder = new Order({
       orderItems,
       shippingAddress: address,
       user: user._id,
-      totalPrice: cart.totalPrice,
-      totalDiscountPrice: cart.totalDiscountPrice,
-      totalItems: cart.totalItems,
+      totalPrice: OrderTotalPrice,
+      totalDiscountPrice: OrderTotalDiscountPrice,
+      totalItems: OrderTotalItems,
       discount: cart.discount,
     });
     const savedOrder = await createdOrder.save();
+    // console.log(savedOrder);
     return savedOrder;
   } catch (err) {
+    console.log(err);
     throw new Error(err.message);
   }
 };
@@ -163,4 +191,16 @@ const findOrderById = async (orderId) => {
     .populate("shippingAddress");
 
   return order;
+};
+exports.getOrderById = async (orderId) => {
+  try {
+    const order = await Order.findById(orderId)
+      .populate("user")
+      //    in order Items also product
+      .populate({ path: "orderItems", populate: { path: "product" } })
+      .populate("shippingAddress");
+    return order;
+  } catch (err) {
+    throw new Error(err.message);
+  }
 };

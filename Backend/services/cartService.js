@@ -84,7 +84,7 @@ exports.addItemCart = async (userId, req) => {
       cart.cartItems.push(createdCartItem);
 
       await cart.save();
-      console.log("Added" + cart);
+      // console.log("Added" + cart);
 
       return cart;
     }

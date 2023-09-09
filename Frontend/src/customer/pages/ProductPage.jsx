@@ -233,7 +233,7 @@ export default function ProductPage() {
     setGridView(!gridView);
   };
 
-  //  Now for getting data getting Query
+  //  Now for getting data getting Query                    READING FROM URL
   const decodedQuery = decodeURIComponent(window.location.search);
   const searchParams = new URLSearchParams(decodedQuery);
 

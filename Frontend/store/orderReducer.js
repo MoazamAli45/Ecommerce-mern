@@ -12,18 +12,15 @@ export const createOrder = createAsyncThunk(
   "order/createOrder",
   async (data, thunkAPI) => {
     try {
-      const data = await api.post(`/api/v1/orders`, data.address);
+      const order = await api.post(`/api/v1/orders`, data.address);
 
-      const order = await data.json();
-      if (order.status === "fail" || order.status === "error") {
-        throw new Error(order.message);
-      }
       //  on creating navigating
-      data.naviagte(`step=3 & order_id=${order.data.order._id}`);
 
-      return order;
+      // console.log("Order" + order.data);
+      return order.data;
     } catch (err) {
-      return thunkAPI.rejectWithValue(err);
+      console.log(err.response.data.message);
+      return thunkAPI.rejectWithValue(err.response.data.message);
     }
   }
 );
@@ -32,14 +29,11 @@ export const getOrderById = createAsyncThunk(
   "order/getOrderById",
   async (orderId, thunkAPI) => {
     try {
-      const data = await api.get(`/api/v1/orders/${orderId}`);
-      const order = await data.json();
-      if (order.status === "fail" || order.status === "error") {
-        throw new Error(order.message);
-      }
-      return order;
+      const order = await api.get(`/api/v1/orders/${orderId}`);
+     
+      return order.data;
     } catch (err) {
-      return thunkAPI.rejectWithValue(err);
+      return thunkAPI.rejectWithValue(err.response.data.message);
     }
   }
 );
@@ -67,7 +61,7 @@ const orderSlice = createSlice({
   extraReducers: (builder) =>
     builder
       .addCase(createOrder.pending, (state) => {
-        state.isLoading = false;
+        state.isLoading = true;
       })
       .addCase(createOrder.fulfilled, (state, action) => {
         state.isLoading = false;

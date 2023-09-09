@@ -14,7 +14,7 @@ const orderSchema = new mongoose.Schema({
   ],
   orderDate: {
     type: Date,
-    required: [true, "Please Provide a valid Date"],
+    default: Date.now(),
   },
   deliveryDate: {
     type: Date,
@@ -22,7 +22,7 @@ const orderSchema = new mongoose.Schema({
   shippingAddress: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "addressses",
+      ref: "addresses",
     },
   ],
   paymentDetails: {
@@ -54,7 +54,7 @@ const orderSchema = new mongoose.Schema({
     required: true,
   },
   orderStatus: {
-    type: Number,
+    type: String,
     required: true,
     default: "Pending",
   },

@@ -22,7 +22,7 @@ exports.createOrder = catchAsync(async (req, res) => {
 exports.findOrderById = catchAsync(async (req, res) => {
   try {
     const orderId = req.params.id;
-    const order = await OrderService.findOrderById(orderId);
+    const order = await OrderService.getOrderById(orderId);
     res.status(200).json({
       status: "success",
       data: {
@@ -30,6 +30,7 @@ exports.findOrderById = catchAsync(async (req, res) => {
       },
     });
   } catch (err) {
+    console.log(err);
     throw new Error(err.message);
   }
 });

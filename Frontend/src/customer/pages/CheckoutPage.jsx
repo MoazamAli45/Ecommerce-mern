@@ -30,10 +30,11 @@ export default function CheckoutPage() {
   //   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    searchParams.set("step", step - 1);
-    const query = searchParams.toString();
-    navigate({ search: `?${query}` });
+    // setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    // searchParams.set("step", step - 1);
+    // const query = searchParams.toString();
+    // navigate({ search: `?${query}` });
+    navigate(-1);
   };
 
   const navigateStepHandler = (stepCheck) => {
