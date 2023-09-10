@@ -8,24 +8,37 @@ import OrderPage from "./../pages/OrderPage";
 import OrderSummaryPage from "./../pages/OrderSummaryPage";
 import LoginPage from "./../pages/LoginPage";
 import SignupPage from "./../pages/SignupPage";
-
+import Layout from "../components/Layout/Layout";
+import ProtectedRoutes from "./ProtectedRoutes";
 const CustomerRoutes = () => {
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/signup" element={<SignupPage />} />
-      <Route
-        path="/:levelOne/:levelTwo/:levelThree"
-        element={<ProductPage />}
-      />
-      <Route path="/product/:productId" element={<ProductDetailPage />} />
-      <Route path="/cart" element={<CartPage />} />
-      <Route path="/checkout" element={<CheckoutPage />} />
-      {/*    For User Account  */}
-      <Route path="/account/order" element={<OrderPage />} />
-      <Route path="/account/order/:orderId" element={<OrderSummaryPage />} />
-    </Routes>
+    <Layout>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        {/* 
+           Protected Routes          */}
+        <Route element={<ProtectedRoutes />}>
+          <Route
+            path="/:levelOne/:levelTwo/:levelThree"
+            element={<ProductPage />}
+          />
+
+          <Route path="/product/:productId" element={<ProductDetailPage />} />
+
+          <Route path="/cart" element={<CartPage />} />
+
+          <Route path="/checkout" element={<CheckoutPage />} />
+          {/*    For User Account  */}
+          <Route path="/account/order" element={<OrderPage />} />
+          <Route
+            path="/account/order/:orderId"
+            element={<OrderSummaryPage />}
+          />
+        </Route>
+      </Routes>
+    </Layout>
   );
 };
 

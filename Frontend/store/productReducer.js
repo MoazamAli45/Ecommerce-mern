@@ -27,10 +27,8 @@ export const getAllProducts = createAsyncThunk(
         `/api/v1/products?colors=${colors}&sizes=${sizes}&minPrice=${minPrice}&maxPrice=${maxPrice}&category=${category}&stock=${stock}&sort=${sort}&pageNumber=${pageNumber}&pageSize=${pageSize}`
       );
 
-      console.log(products.data.data);
-      // if (products.status === "error" || products.status === "fail") {
-      //   throw new Error(products.message);
-      // }
+      // console.log(products.data.data);
+
       return products.data.data;
     } catch (err) {
       // console.log(err);

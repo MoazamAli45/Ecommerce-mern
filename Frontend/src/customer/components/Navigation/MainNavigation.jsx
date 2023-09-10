@@ -542,21 +542,35 @@ export default function MainNavigation() {
                 </div> */}
 
                 <div>
-                  {isAuth && user && (
+                  {console.log(user)}
+                  {isAuth && user?.user?.role === "ADMIN" && (
                     <Button
-                      id="demo-positioned-button"
-                      aria-controls={
-                        openMenu ? "demo-positioned-menu" : undefined
-                      }
-                      aria-haspopup="true"
-                      aria-expanded={openMenu ? "true" : undefined}
-                      onClick={handleOpen}
+                      onClick={() => navigate("/admin")}
+                      className="text-md md:text-lg"
+                      variant="contained"
                     >
-                      <Avatar sx={{ bgcolor: "#9155FD" }}>
-                        {user.user.firstName[0].toUpperCase()}
-                      </Avatar>
+                      Admin Panel
                     </Button>
                   )}
+
+                  {isAuth &&
+                    user?.user?.role !== "ADMIN" &&
+                    (console.log(user?.role),
+                    (
+                      <Button
+                        id="demo-positioned-button"
+                        aria-controls={
+                          openMenu ? "demo-positioned-menu" : undefined
+                        }
+                        aria-haspopup="true"
+                        aria-expanded={openMenu ? "true" : undefined}
+                        onClick={handleOpen}
+                      >
+                        <Avatar sx={{ bgcolor: "#9155FD" }}>
+                          {user.user.firstName[0].toUpperCase()}
+                        </Avatar>
+                      </Button>
+                    ))}
                   <Menu
                     id="demo-positioned-menu"
                     aria-labelledby="demo-positioned-button"

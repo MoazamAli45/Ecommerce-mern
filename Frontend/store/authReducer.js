@@ -75,6 +75,7 @@ export const registerUser = createAsyncThunk(
 export const getUser = createAsyncThunk(
   "auth/getUser",
   async (jwt, thunkAPI) => {
+    // console.log(jwt);
     // const token = JSON.parse(jwt);
     try {
       if (!jwt) {
@@ -161,6 +162,7 @@ const authSlice = createSlice({
           state.isAuth = true;
         } else {
           state.user = null;
+          state.isAuth = false;
         }
         state.isLoading = false;
       })

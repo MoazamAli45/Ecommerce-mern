@@ -13,6 +13,9 @@ const CartSection = (props) => {
   const dispatch = useDispatch();
 
   const { cart, isLoading, error } = useSelector((state) => state.cart);
+  const { isAuth } = useSelector((state) => state.auth);
+
+  console.log(isAuth, "From Cart");
   // console.log(cart);
   //  fetching data
   useEffect(() => {
