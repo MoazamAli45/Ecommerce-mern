@@ -57,8 +57,9 @@ const createProduct = async (reqData) => {
 };
 
 exports.deleteProduct = async (productId) => {
+  console.log(productId);
   const product = await Product.findByIdAndDelete(productId);
-
+  console.log(product);
   if (!product) {
     throw new Error("Product not found");
   }

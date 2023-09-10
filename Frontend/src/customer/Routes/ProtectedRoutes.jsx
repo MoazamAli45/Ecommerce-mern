@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { getUser } from "../../../store/authReducer";
 import NotLoggedIn from "../components/NotLoggedIn/NotLoggedIn";
 import Loading from "../components/Loading/Loading";
-import { toast, ToastContainer } from "react-toastify";
+// import { toast, ToastContainer } from "react-toastify";
 const ProtectedRoutes = () => {
   const dispatch = useDispatch();
   const { isAuth, error, isLoading } = useSelector((state) => state.auth);
@@ -23,7 +23,7 @@ const ProtectedRoutes = () => {
 
   if (error) {
     console.log(error);
-    toast.error(error);
+    // toast.error(error);
   }
   if (isLoading) {
     return (

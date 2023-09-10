@@ -18,7 +18,8 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 import MuiAppBar from "@mui/material/AppBar";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import { Stack } from "@mui/material";
-
+import { useDispatch } from "react-redux";
+import { logout } from "../../../../store/authReducer";
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -68,6 +69,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Navbar(props) {
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -87,6 +89,7 @@ export default function Navbar(props) {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+    dispatch(logout());
     handleMobileMenuClose();
   };
 
@@ -118,8 +121,8 @@ export default function Navbar(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+      {/* <MenuItem onClick={handleMenuClose}>My account</MenuItem> */}
     </Menu>
   );
 

@@ -1,12 +1,12 @@
 import * as React from "react";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
+// import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import { Stack } from "@mui/material";
@@ -14,27 +14,30 @@ import { FormControl, Select, InputLabel, MenuItem } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import Skeleton from "@mui/material/Skeleton";
-
-import { Box } from "@mui/material";
-// import Swal from "sweetalert2";
-
+import Avatar from "@mui/material/Avatar";
+import { Box, Button } from "@mui/material";
+import Swal from "sweetalert2";
+import { ToastContainer, toast } from "react-toastify";
 //  for getting data
 
 import { useDispatch, useSelector } from "react-redux";
 
 import { getAllProducts } from "./../../../../store/productReducer";
-
-function ProductList() {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+import { deleteProduct, reset } from "./../../../../store/productReducer";
+function Products() {
   const [category, setCategory] = useState("menKurtas");
   const dispatch = useDispatch();
 
-  const { products, isLoading, error } = useSelector((state) => state.product);
+  const { products, isLoading, error, deleted } = useSelector(
+    (state) => state.product
+  );
 
-  console.log(products);
+  // console.log(products);
   // getting data
   useEffect(() => {
+    if (deleted) {
+      Swal.fire("Deleted", "Item deleted Successfully", "success");
+    }
     const data = {
       category: category,
       colors: [],
@@ -44,11 +47,16 @@ function ProductList() {
       stock: [],
       sort: "price_high_to_low",
       pageNumber: 0,
-      pageSize: rowsPerPage,
+      pageSize: 20,
     };
 
     dispatch(getAllProducts(data));
-  }, [dispatch, category, rowsPerPage]);
+    //  OnSuccessfully Deleted
+
+    () => {
+      dispatch(reset());
+    };
+  }, [dispatch, category, deleted]);
 
   //   const { rowsData, setRowsList } = useContext(DataContext);
   // using useContext
@@ -69,64 +77,34 @@ function ProductList() {
 
   // console.log(rowsData);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);
   };
 
-  console.log(category);
+  const deleteProductHandler = (id) => {
+    console.log(id);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3f51b5",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.value) {
+        dispatch(deleteProduct(id)); // now this will delete form firebase
+      }
+    });
+  };
 
-  //   const deleteProductHandler = (id) => {
-  //     Swal.fire({
-  //       title: "Are you sure?",
-  //       text: "You won't be able to revert this!",
-  //       icon: "warning",
-  //       showCancelButton: true,
-  //       confirmButtonColor: "#d33",
-  //       cancelButtonColor: "#3f51b5",
-  //       confirmButtonText: "Yes, delete it!",
-  //     }).then((result) => {
-  //       if (result.value) {
-  //         // deleteApi(id); // now this will delete form firebase
-  //       }
-  //     });
-  //   };
-
-  // deletinvg functionn from firebase
-  //   const deleteApi = async (id) => {
-  //     // selecting the document to be deleted
-  //     const userDocument = doc(db, "products", id);
-  //     await deleteDoc(userDocument);
-  //     Swal.fire("Deleted", "Item deleted Successfully", "success");
-  //     // now again fetch Dtaa
-  //     getData();
-  //   };
-
-  // filtering Data
-  //   const filterData = (v) => {
-  //     if (v) {
-  //       console.log(v);
-  //       setRowsList([v]);
-  //     } else {
-  //       console.log("no data");
-  //       getData();
-  //     }
-  //   };
-
-  /// Modal Opening Handler
-
-  // for edit modal
+  if (error) {
+    toast.error(error);
+  }
 
   return (
     <div className="w-full">
+      <ToastContainer position="top-center" autoClose={2000} />
       {isLoading && (
         <>
           <Paper
@@ -176,7 +154,7 @@ function ProductList() {
             padding: "12px",
           }}
         >
-          <TableContainer sx={{ maxHeight: 440 }}>
+          <TableContainer>
             <Typography
               gutterBottom
               variant="h5"
@@ -188,7 +166,7 @@ function ProductList() {
             <Stack direction="row" spacing={2} className="my-2 mb-2 mr-2 ">
               {/*       MENU     */}
               <FormControl className="w-[20%]">
-                <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                <InputLabel id="demo-simple-select-label">Category</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
@@ -212,7 +190,17 @@ function ProductList() {
                       },
                     }}
                   >
-                    Name
+                    Image
+                  </TableCell>
+                  <TableCell
+                    align={"left"}
+                    style={{
+                      minWidth: {
+                        md: "200px",
+                      },
+                    }}
+                  >
+                    Title
                   </TableCell>
                   <TableCell
                     align={"left"}
@@ -224,6 +212,7 @@ function ProductList() {
                   >
                     Category
                   </TableCell>
+
                   <TableCell
                     align={"left"}
                     style={{
@@ -234,7 +223,6 @@ function ProductList() {
                   >
                     Price
                   </TableCell>
-
                   <TableCell
                     align={"left"}
                     style={{
@@ -243,31 +231,16 @@ function ProductList() {
                       },
                     }}
                   >
-                    Date
-                  </TableCell>
-                  <TableCell
-                    align={"left"}
-                    style={{
-                      minWidth: {
-                        md: "200px",
-                      },
-                    }}
-                  >
-                    Actions
+                    Delete
                   </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {[1, 1, 1, 1]
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => {
+                {products?.products?.content
+                  // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, id) => {
                     return (
-                      <TableRow
-                        hover
-                        role="checkbox"
-                        tabIndex={-1}
-                        key={row.id}
-                      >
+                      <TableRow hover role="checkbox" tabIndex={-1} key={id}>
                         <TableCell
                           align={"left"}
                           sx={{
@@ -276,7 +249,7 @@ function ProductList() {
                             },
                           }}
                         >
-                          {row.name}
+                          <Avatar alt="Image" src={row.imageUrl} />
                         </TableCell>
                         <TableCell
                           align={"left"}
@@ -286,7 +259,17 @@ function ProductList() {
                             },
                           }}
                         >
-                          {row.category}
+                          {row.title}
+                        </TableCell>
+                        <TableCell
+                          align={"left"}
+                          sx={{
+                            minWidth: {
+                              md: "200px",
+                            },
+                          }}
+                        >
+                          {row.category[2].name}
                         </TableCell>
                         <TableCell
                           align={"left"}
@@ -306,27 +289,33 @@ function ProductList() {
                             },
                           }}
                         >
-                          {row.date}
-                        </TableCell>
-                        <TableCell
-                          align={"left"}
-                          sx={{
-                            minWidth: {
-                              md: "200px",
-                            },
-                          }}
-                        >
                           <Stack direction="row" spacing={2}>
-                            <DeleteIcon
+                            <Button
+                              className="flex gap-2 place-items-center justify-center"
+                              variant="outlined"
                               sx={{
-                                fontSize: "1.2rem",
-                                color: "darkred",
-                                cursor: "pointer",
+                                // backgroundColor: "red",
+                                color: "red",
+                                border: "1px solid red",
+                                "&:hover": {
+                                  backgroundColor: "red",
+                                  color: "white",
+                                },
                               }}
-                              onClick={() => {
-                                deleteProductHandler(row.id);
-                              }}
-                            />
+                              onClick={() => deleteProductHandler(row._id)}
+                            >
+                              <span>Delete</span>
+                              <DeleteIcon
+                                sx={{
+                                  fontSize: "1.2rem",
+                                  color: "darkred",
+                                  cursor: "pointer",
+                                }}
+                                // onClick={() => {
+                                //   // deleteProductHandler(row.id);
+                                // }}
+                              />
+                            </Button>
                           </Stack>
                         </TableCell>
                       </TableRow>
@@ -335,19 +324,19 @@ function ProductList() {
               </TableBody>
             </Table>
           </TableContainer>
-          <TablePagination
+          {/* <TablePagination
             rowsPerPageOptions={[3, 5, 10]}
             component="div"
-            // count={rowsData.length}
+            count={products?.products?.totalPages}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
-          />
+          /> */}
         </Paper>
       )}
     </div>
   );
 }
 
-export default React.memo(ProductList);
+export default React.memo(Products);
