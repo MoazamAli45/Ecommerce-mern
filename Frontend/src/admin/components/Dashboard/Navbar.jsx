@@ -183,7 +183,7 @@ export default function Navbar(props) {
       <AppBar
         position="fixed"
         elevation={0}
-        // sx={{ backgroundColor: "#fff", color: "black" }}
+        sx={{ backgroundColor: "##9155FD" }}
       >
         <Toolbar>
           <IconButton

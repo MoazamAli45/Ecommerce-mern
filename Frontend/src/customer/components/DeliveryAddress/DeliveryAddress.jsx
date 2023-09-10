@@ -213,11 +213,11 @@ const DeliveryAddress = () => {
           type="submit"
           className="md:w-[30%] px-4 py-3"
           sx={{
-            backgroundColor: "#974EC3",
+            backgroundColor: "##9155FD",
             color: "#fff",
             transition: "all 0.3s ease-in-out",
             "&:hover": {
-              backgroundColor: "#974EC3",
+              backgroundColor: "##9155FD",
             },
           }}
           // onClick={navigateHandler}

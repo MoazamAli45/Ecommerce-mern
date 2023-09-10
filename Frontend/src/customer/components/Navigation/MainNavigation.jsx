@@ -542,12 +542,15 @@ export default function MainNavigation() {
                 </div> */}
 
                 <div>
-                  {console.log(user)}
+                  {/* {console.log(user)} */}
                   {isAuth && user?.user?.role === "ADMIN" && (
                     <Button
                       onClick={() => navigate("/admin")}
                       className="text-md md:text-lg"
                       variant="contained"
+                      sx={{
+                        backgroundColor: "#9155FD",
+                      }}
                     >
                       Admin Panel
                     </Button>

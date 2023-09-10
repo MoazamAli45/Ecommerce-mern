@@ -58,25 +58,6 @@ function Products() {
     };
   }, [dispatch, category, deleted]);
 
-  //   const { rowsData, setRowsList } = useContext(DataContext);
-  // using useContext
-  // const [rows, setRows] = useState(rowsData);
-
-  //   const emptyCollectionRef = collection(db, "products");
-  //   // now getting data from firebase
-  //   // wrap this function in useCallback
-
-  //   const getData = useCallback(async () => {
-  //     const data = await getDocs(emptyCollectionRef);
-  //     setRowsList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-  //   }, [emptyCollectionRef, setRowsList]);
-
-  //   useEffect(() => {
-  //     getData();
-  //   }, []); // I want only one time rerendering so
-
-  // console.log(rowsData);
-
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);
   };
@@ -113,16 +94,21 @@ function Products() {
                 xs: "80vw",
                 md: "90vw",
               },
-              height: {
-                xs: "60vh",
-                md: "80vh",
-              },
+              height: "100vh",
               overflow: "hidden",
               padding: "12px",
             }}
           >
             <Box height={20} />
             <Skeleton variant="rectangular" width="100%" height={50} />
+            <Box height={20} />
+            <Skeleton variant="rectangular" width="100%" height={30} />
+            <Box height={20} />
+            <Skeleton variant="rectangular" width="100%" height={30} />
+            <Box height={20} />
+            <Skeleton variant="rectangular" width="100%" height={30} />
+            <Box height={20} />
+            <Skeleton variant="rectangular" width="100%" height={30} />
             <Box height={20} />
             <Skeleton variant="rectangular" width="100%" height={30} />
             <Box height={20} />
@@ -165,7 +151,7 @@ function Products() {
             </Typography>
             <Stack direction="row" spacing={2} className="my-2 mb-2 mr-2 ">
               {/*       MENU     */}
-              <FormControl className="w-[20%]">
+              <FormControl className="w-[50%] md:w-[20%]">
                 <InputLabel id="demo-simple-select-label">Category</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
