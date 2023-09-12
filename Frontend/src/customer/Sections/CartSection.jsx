@@ -13,9 +13,7 @@ const CartSection = (props) => {
   const dispatch = useDispatch();
 
   const { cart, isLoading, error } = useSelector((state) => state.cart);
-  const { isAuth } = useSelector((state) => state.auth);
 
-  console.log(isAuth, "From Cart");
   // console.log(cart);
   //  fetching data
   useEffect(() => {
@@ -80,7 +78,14 @@ const CartSection = (props) => {
         <div className="flex justify-between">
           <h5 className="text-lg font-bold">Total Amount</h5>
           <h5 className="text-lg font-bold">
-            Rs{cart?.cart?.totalPrice - cart?.cart?.totalDiscountPrice}
+            Rs
+            {/* {console.log(typeof cart?.cart?.totalDiscountPrice, "From Cart")} */}
+            {typeof cart?.cart?.totalDiscountPrice === "number" &&
+              typeof cart?.cart?.totalPrice === "number" &&
+              cart?.cart?.totalPrice - cart?.cart?.totalDiscountPrice}
+            {typeof cart?.cart?.totalDiscountPrice !== "number" &&
+              typeof cart?.cart?.totalPrice !== "number" &&
+              0}
           </h5>
         </div>
         <Button

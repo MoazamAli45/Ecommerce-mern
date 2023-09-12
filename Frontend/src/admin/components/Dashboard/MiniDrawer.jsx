@@ -76,11 +76,11 @@ const items = [
     icon: <ShoppingCartIcon />,
     link: "/admin/products",
   },
-  {
-    text: "Customers",
-    icon: <PersonIcon />,
-    link: "/admin/customer",
-  },
+  // {
+  //   text: "Customers",
+  //   icon: <PersonIcon />,
+  //   link: "/admin/customer",
+  // },
   {
     text: "Orders",
     icon: <ShoppingBagIcon />,

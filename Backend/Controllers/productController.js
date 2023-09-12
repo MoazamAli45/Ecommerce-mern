@@ -13,6 +13,7 @@ exports.createProduct = catchAsync(async (req, res) => {
       },
     });
   } catch (err) {
+    console.log(err);
     throw new Error(err.message);
   }
 });
@@ -77,6 +78,7 @@ exports.getAllProducts = catchAsync(async (req, res) => {
       },
     });
   } catch (err) {
+    console.log(err);
     throw new Error(err);
   }
 });

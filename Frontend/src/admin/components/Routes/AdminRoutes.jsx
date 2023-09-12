@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Layout from "../Dashboard/Layout";
 import Navbar from "../Dashboard/Navbar";
-import AdminCustomer from "../../pages/AdminCustomer";
 import AdminHome from "../../pages/AdminHome";
 import AdminOrders from "../../pages/AdminOrders";
 import AdminAddProduct from "../../pages/AdminAddProduct";
@@ -18,7 +17,7 @@ const AdminRoutes = () => {
       <Layout open={openDrawer}>
         <Routes>
           <Route path="/" element={<AdminHome />} />
-          <Route path="/customer" element={<AdminCustomer />} />
+
           <Route path="/products" element={<AdminProductsPage />} />
           <Route path="/orders" element={<AdminOrders />} />
           <Route path="/add-product" element={<AdminAddProduct />} />

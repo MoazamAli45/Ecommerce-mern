@@ -18,16 +18,6 @@ export default function CheckoutPage() {
   // Query of step
   const step = parseInt(searchParams.get("step"));
   const [activeStep, setActiveStep] = React.useState(step - 1);
-  //   const handleNext = () => {
-  //     let newSkipped = skipped;
-  //     if (isStepSkipped(activeStep)) {
-  //       newSkipped = new Set(newSkipped.values());
-  //       newSkipped.delete(activeStep);
-  //     }
-
-  //     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  //     setSkipped(newSkipped);
-  //   };
 
   const handleBack = () => {
     // setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -37,12 +27,10 @@ export default function CheckoutPage() {
     navigate(-1);
   };
 
-  const navigateStepHandler = (stepCheck) => {
-    console.log(stepCheck);
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    searchParams.set("step", step + 1);
-    const query = searchParams.toString();
-    navigate({ search: `?${query}` });
+  const navigateStepHandler = (step) => {
+    // console.log(stepCheck);
+    //  for  increasing step
+    setActiveStep(step + 1);
   };
 
   return (
@@ -79,38 +67,38 @@ export default function CheckoutPage() {
             );
           })}
         </Stepper>
-        {activeStep === steps.length ? (
+        {/* {activeStep === steps.length ? (
           <React.Fragment>
             <Typography sx={{ mt: 2, mb: 1 }}>
               All steps completed - you&apos;re finished
             </Typography>
             <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-              <Box sx={{ flex: "1 1 auto" }} />
-              {/* <Button onClick={handleReset}>Reset</Button> */}
-            </Box>
-          </React.Fragment>
-        ) : (
-          <React.Fragment>
-            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-              <Button
-                color="inherit"
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                sx={{ mr: 1 }}
-              >
-                Back
-              </Button>
-              <Box sx={{ flex: "1 1 auto" }} />
+              <Box sx={{ flex: "1 1 auto" }} /> */}
+        {/* <Button onClick={handleReset}>Reset</Button> */}
+        {/* </Box>
+          </React.Fragment> */}
+        {/* ):  */}
+        <React.Fragment>
+          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+            <Button
+              color="inherit"
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              sx={{ mr: 1 }}
+            >
+              Back
+            </Button>
+            <Box sx={{ flex: "1 1 auto" }} />
 
-              {/* <Button onClick={handleNext}>
+            {/* <Button onClick={handleNext}>
                 {activeStep === steps.length - 1 ? "Finish" : "Next"}
               </Button> */}
-            </Box>
-            {/*   Content to be Shown  */}
-            {step == 2 && <DeliveryAddress onNavigate={navigateStepHandler} />}
-            {step == 3 && <OrderSummary />}
-          </React.Fragment>
-        )}
+          </Box>
+          {/*   Content to be Shown  */}
+          {step == 2 && <DeliveryAddress onNavigate={navigateStepHandler} />}
+          {step == 3 && <OrderSummary />}
+        </React.Fragment>
+        )
       </Box>
     </div>
   );

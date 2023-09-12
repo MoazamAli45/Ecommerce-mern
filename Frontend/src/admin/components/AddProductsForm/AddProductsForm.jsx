@@ -7,8 +7,15 @@ import {
   Button,
 } from "@mui/material";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import Swal from "sweetalert2";
+import { createProduct, reset } from "../../../../store/productReducer";
 
+import Spinner from "../../../customer/components/Spinner/Spinner";
 const AddProductsForm = () => {
+  const { isLoading, error, added } = useSelector((state) => state.product);
+
   const [form, setForm] = useState({
     imageUrl: "",
     brand: "",
@@ -17,27 +24,32 @@ const AddProductsForm = () => {
     quantity: "",
     price: "",
     discountPrice: "",
-    discountPercentage: "",
+    discountPercent: "",
     description: "",
     category: [],
     sizes: [],
   });
+  // console.log(form);
 
   const [category1, setCategory1] = useState("");
   const [category2, setCategory2] = useState("");
   const [category3, setCategory3] = useState("");
   const [size1, setSize1] = useState({
-    sizeName: "",
+    name: "",
     quantity: "",
   });
   const [size2, setSize2] = useState({
-    sizeName: "",
+    name: "",
     quantity: "",
   });
   const [size3, setSize3] = useState({
-    sizeName: "",
+    name: "",
     quantity: "",
   });
+
+  //   For redux
+  const dispatch = useDispatch();
+
   const handleChange1 = (e) => {
     setCategory1(e.target.value);
   };
@@ -51,13 +63,68 @@ const AddProductsForm = () => {
   const submitHandler = (e) => {
     e.preventDefault();
 
-    form.category = [category1, category2, category3];
+    form.category = [
+      {
+        name: category1,
+        level: 1,
+      },
+      {
+        name: category2,
+        level: 2,
+      },
+      {
+        name: category3,
+        level: 3,
+      },
+    ];
     form.sizes = [size1, size2, size3];
-    console.log(form);
+    // console.log(form);
+
+    dispatch(createProduct(form));
+
+    setForm({
+      imageUrl: "",
+      brand: "",
+      title: "",
+      color: "",
+      quantity: "",
+      price: "",
+      discountPrice: "",
+      discountPercent: "",
+      description: "",
+      category: [],
+      sizes: [],
+    });
+    setCategory1("");
+    setCategory2("");
+    setCategory3("");
+    setSize1({
+      name: "",
+      quantity: "",
+    });
+    setSize2({
+      name: "",
+      quantity: "",
+    });
+    setSize3({
+      name: "",
+      quantity: "",
+    });
   };
+
+  if (error) {
+    toast.error(error);
+  }
+
+  if (added) {
+    // toast.success("Product Added Successfully");
+    Swal.fire("Added", "Product Added Successfully", "success");
+    dispatch(reset());
+  }
 
   return (
     <div className="bg-white w-full px-4 py-5">
+      <ToastContainer position="top-center" autoClose={2000} />
       <div className="flex justify-center">
         <h1 className="text-gray-900 font-bold text-3xl">Add Product</h1>
       </div>
@@ -138,11 +205,11 @@ const AddProductsForm = () => {
             variant="outlined"
             className="w-full"
             type="number"
-            value={form.discountPercentage}
+            value={form.discountPercent}
             onChange={(e) =>
               setForm({
                 ...form,
-                discountPercentage: e.target.value,
+                discountPercent: e.target.value,
               })
             }
           />
@@ -209,9 +276,9 @@ const AddProductsForm = () => {
             label="Size Name"
             variant="outlined"
             className="w-full"
-            value={size1.sizeName}
+            value={size1.name}
             onChange={(e) => {
-              setSize1({ ...size1, sizeName: e.target.value });
+              setSize1({ ...size1, name: e.target.value });
             }}
             required
           />
@@ -230,14 +297,14 @@ const AddProductsForm = () => {
         </div>{" "}
         <div className="flex gap-2">
           <TextField
-            helperText="Please enter size 'S','M','L','XL' etc."
+            helperText="Please enter size 'small','medium','large','xlarge' etc."
             id="outlined-size2"
             label="Size Name"
             variant="outlined"
             className="w-full"
-            value={size2.sizeName}
+            value={size2.name}
             onChange={(e) => {
-              setSize2({ ...size2, sizeName: e.target.value });
+              setSize2({ ...size2, name: e.target.value });
             }}
           />
           <TextField
@@ -258,11 +325,11 @@ const AddProductsForm = () => {
             label="Size Name"
             variant="outlined"
             className="w-full"
-            value={size3.sizeName}
+            value={size3.name}
             onChange={(e) => {
               setSize3({
                 ...size3,
-                sizeName: e.target.value,
+                name: e.target.value,
               });
             }}
           />
@@ -295,7 +362,12 @@ const AddProductsForm = () => {
               },
             }}
           >
-            Add Product
+            {!isLoading && "Add Product"}
+            {isLoading && (
+              <span className="flex gap-2">
+                <Spinner /> Submitting...
+              </span>
+            )}
           </Button>
         </div>
       </form>

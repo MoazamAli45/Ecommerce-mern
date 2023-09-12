@@ -8,8 +8,8 @@ import Typography from "@mui/material/Typography";
 import AllInboxIcon from "@mui/icons-material/AllInbox";
 import PaymentIcon from "@mui/icons-material/Payment";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
-// import DashboardAccordion from "./../components/accordian";
-// import { BarChart } from "./../components/charts/BarChart";
+import DashboardAccordion from "../DashboardAccordian/DashbaordAccordian";
+import { BarChart } from "../BarChart/BarChart";
 import Countup from "react-countup";
 import "./hero.css";
 
@@ -62,6 +62,7 @@ const Hero = () => {
             </Card>
           </Stack>
         </Grid>
+
         <Grid item md={4} xs={12}>
           <Stack
             direction="column"
@@ -121,7 +122,7 @@ const Hero = () => {
               padding: ".75rem .5rem .5rem .5rem",
             }}
           >
-            {/* <BarChart /> */}
+            <BarChart />
           </Card>
         </Grid>
         <Grid item xs={12} md={4}>
@@ -136,7 +137,7 @@ const Hero = () => {
             >
               Recent Sales
             </Typography>
-            {/* <DashboardAccordion /> */}
+            <DashboardAccordion />
           </Card>
         </Grid>
       </Grid>

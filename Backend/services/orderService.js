@@ -43,14 +43,14 @@ exports.createOrder = async (userId, shipAddress) => {
     for (let cartItem of cart.cartItems) {
       // now creating orderItem
       const orderItem = new OrderItem({
-        product: cartItem.product,
+        product: cartItem.products,
         size: cartItem.size,
         quantity: cartItem.quantity,
         price: cartItem.totalPrice,
         discountPrice: cartItem.totalDiscountPrice,
         userId: user._id,
       });
-
+      // console.log(orderItem);
       const createdOrderItem = await orderItem.save();
       orderItems.push(createdOrderItem);
     }
@@ -172,16 +172,21 @@ exports.getAllOrders = async () => {
       .populate({
         path: "orderItems",
         populate: {
-          path: "products",
+          path: "product",
         },
       })
+      //  lean tells to return a js object rather than mongodb docuemnt
       .lean();
+
+    return orders;
   } catch (err) {
     throw new Error(err.message);
   }
 };
 exports.deleteOrder = async (orderId) => {
   await Order.findByIdAndDelete(orderId);
+
+  return "Order Deleted Successfully";
 };
 const findOrderById = async (orderId) => {
   const order = await Order.findById(orderId)

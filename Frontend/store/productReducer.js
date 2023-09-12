@@ -6,6 +6,7 @@ const initialState = {
   isLoading: false,
   error: "",
   deleted: "",
+  added: "",
 };
 
 export const getAllProducts = createAsyncThunk(
@@ -66,12 +67,28 @@ export const deleteProduct = createAsyncThunk(
   }
 );
 
+//        Creating Product for Admin
+
+export const createProduct = createAsyncThunk(
+  "product/create",
+  async (data, thunkAPI) => {
+    try {
+      const products = await api.post(`/api/v1/admin/products`, data);
+
+      return products.data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response.data.message);
+    }
+  }
+);
+
 const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
     reset: (state) => {
       state.deleted = "";
+      state.added = "";
     },
   },
   extraReducers: (builder) => {
@@ -109,6 +126,17 @@ const productSlice = createSlice({
       state.deleted = action.payload;
     });
     builder.addCase(deleteProduct.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(createProduct.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(createProduct.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.added = action.payload;
+    });
+    builder.addCase(createProduct.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     });

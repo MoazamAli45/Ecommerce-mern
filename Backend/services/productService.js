@@ -50,13 +50,15 @@ const createProduct = async (reqData) => {
       category: reqData.category,
     });
 
-    return await product.save();
+    await product.save();
+    return "Product Created Successfully";
   } catch (err) {
+    console.log(err);
     throw new Error(err.message);
   }
 };
 
-exports.deleteProduct = async (productId) => {
+const deleteProduct = async (productId) => {
   console.log(productId);
   const product = await Product.findByIdAndDelete(productId);
   console.log(product);
@@ -65,7 +67,7 @@ exports.deleteProduct = async (productId) => {
   }
 };
 
-exports.updateProduct = async (productId, reqData) => {
+const updateProduct = async (productId, reqData) => {
   try {
     const product = await Product.findByIdAndUpdate(productId, reqData, {
       new: true,
@@ -77,10 +79,10 @@ exports.updateProduct = async (productId, reqData) => {
   }
 };
 
-exports.getProductsAll = async (reqQuery) => {
+const getProductsAll = async (reqQuery) => {
   try {
     const { colors, sizes, minPrice, maxPrice, sort, stock } = reqQuery;
-    console.log(reqQuery);
+    // console.log(reqQuery);
     // Limiting how many product show on each page
     let pageSize = reqQuery.pageSize || 10;
     let pageNumber = reqQuery.pageNumber || 1;
@@ -103,12 +105,12 @@ exports.getProductsAll = async (reqQuery) => {
 
     // Color
     if (colors) {
-      console.log(colors);
+      // console.log(colors);
       //  making unique array
       const colorSet = new Set(
         colors.split(",").map((colors) => colors.trim().toLowerCase())
       );
-      console.log(colorSet);
+      // console.log(colorSet);
       // if any colors matches with product colors then match and return product
       const colorRegex =
         //    RegExp convert into regular expression
@@ -166,7 +168,7 @@ exports.getProductsAll = async (reqQuery) => {
     }
 
     const totalProducts = await Product.countDocuments(query);
-    console.log("Documents" + totalProducts);
+    // console.log("Documents" + totalProducts);
     // // skip
     // // on 1 page  0-10
     const skip = +pageNumber * +pageSize;
@@ -191,14 +193,14 @@ exports.getProductsAll = async (reqQuery) => {
   }
 };
 
-exports.findProductById = async (productId) => {
+const findProductById = async (productId) => {
   const product = await Product.findById(productId);
 
   return product;
 };
 
 //     For Uploading Multiple Products  at start
-exports.createMultipleProduct = async (products) => {
+const createMultipleProduct = async (products) => {
   for (product of products) {
     console.log(product);
     await createProduct(product);
@@ -206,4 +208,11 @@ exports.createMultipleProduct = async (products) => {
 };
 const productSerice = {
   createProduct,
+  deleteProduct,
+  updateProduct,
+  getProductsAll,
+  findProductById,
+  createMultipleProduct,
 };
+
+module.exports = productSerice;

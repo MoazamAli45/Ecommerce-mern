@@ -16,7 +16,7 @@ const DeliveryAddressCard = (props) => {
       <h5 className="text-lg font-bold text-gray-900">Phone Number</h5>
       {/*  adding dash in mobile number after 4 th digit */}
       <p className="text-gray-500">
-        +92 {props.mobile?.slice(0, 4) + "-" + props.mobile?.slice(4)}
+        {"+92" + props.mobile?.slice(0, 4) + "-" + props.mobile?.slice(4)}
       </p>
       <Button
         variant="contained"

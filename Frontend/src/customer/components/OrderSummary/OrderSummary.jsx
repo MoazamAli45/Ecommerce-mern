@@ -18,7 +18,7 @@ const OrderSummary = () => {
     dispatch(getOrderById(orderId));
   }, [dispatch, orderId]);
 
-  console.log("Order Coming", order);
+  // console.log("Order Coming", order);
 
   if (error) {
     console.log("error", error);

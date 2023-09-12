@@ -3,11 +3,11 @@ import { Button } from "@mui/material";
 // import DeliveryAddressCard from "./DeliveryAddressCard";
 import { useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createOrder } from "../../../../store/orderReducer";
+import { createOrder, reset } from "../../../../store/orderReducer";
 import { useNavigate } from "react-router-dom";
 import Loading from "../Loading/Loading";
 import { toast, ToastContainer } from "react-toastify";
-const DeliveryAddress = () => {
+const DeliveryAddress = (props) => {
   // For Empty the form
   const firstNameRef = useRef();
   const lastNameRef = useRef();
@@ -31,12 +31,15 @@ const DeliveryAddress = () => {
   }, [navigate, order?.data?.order]);
   useEffect(() => {
     if (order) {
+      console.log("Effect");
       toast.success("Order Placed Successfully");
+      props.onNavigate(1);
       setTimeout(() => navigateHandler(), 2000);
+      reset();
     }
 
     return () => {
-      console.log("unmount");
+      // console.log("unmount");
       toast.dismiss();
     };
   }, [order, navigateHandler]);

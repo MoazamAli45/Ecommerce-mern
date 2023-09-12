@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../src/customer/components/config/config";
 
 const initialState = {
@@ -6,6 +6,7 @@ const initialState = {
   order: null,
   isLoading: false,
   error: "",
+  deleted: "",
 };
 
 export const createOrder = createAsyncThunk(
@@ -30,7 +31,7 @@ export const getOrderById = createAsyncThunk(
   async (orderId, thunkAPI) => {
     try {
       const order = await api.get(`/api/v1/orders/${orderId}`);
-     
+
       return order.data;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response.data.message);
@@ -54,10 +55,45 @@ export const getOrderHistory = createAsyncThunk(
   }
 );
 
+//  get ALL Orders
+export const getAllOrders = createAsyncThunk(
+  "order/getAllOrders",
+  async (_, thunkAPI) => {
+    try {
+      const orders = await api.get(`/api/v1/admin/orders`);
+      // console.log(orders.data);
+      return orders.data.data.orders;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response.data.message);
+    }
+  }
+);
+
+//  Delete Order for Admin
+
+export const deleteOrder = createAsyncThunk(
+  "order/deleteOrder",
+  async (orderId, thunkAPI) => {
+    try {
+      const order = await api.delete(`api/v1/admin/orders/${orderId}`);
+      // console.log(order.data.data.order);
+      return order.data.data.order;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response.data.message);
+    }
+  }
+);
+
 const orderSlice = createSlice({
   name: "order",
   initialState,
-  reducers: {},
+  reducers: {
+    reset: (state) => {
+      state.deleted = "";
+      state.order = null;
+      state.orders = [];
+    },
+  },
   extraReducers: (builder) =>
     builder
       .addCase(createOrder.pending, (state) => {
@@ -95,7 +131,33 @@ const orderSlice = createSlice({
       .addCase(getOrderHistory.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+      .addCase(getAllOrders.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllOrders.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.orders = action.payload;
+      })
+      .addCase(getAllOrders.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+
+      //   For deleting order for admin
+      .addCase(deleteOrder.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteOrder.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.deleted = action.payload;
+      })
+      .addCase(deleteOrder.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       }),
 });
 
 export default orderSlice.reducer;
+
+export const { reset } = orderSlice.actions;
