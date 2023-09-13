@@ -12,7 +12,7 @@ const cartRoutes = require("./Routes/cartRoutes");
 const cartItemRoutes = require("./Routes/cartItemRoutes");
 const adminOrderRoutes = require("./Routes/adminOrderRoutes");
 const adminProductRoutes = require("./Routes/adminProductRoutes");
-
+const paymentRoutes = require("./Routes/paymentRoutes");
 // For mongo sanitization
 const mongoSanitize = require("express-mongo-sanitize");
 // For html Sanitization
@@ -64,6 +64,7 @@ app.use("/api/v1/carts", cartRoutes);
 app.use("/api/v1/cartItems", cartItemRoutes);
 app.use("/api/v1/admin/orders", adminOrderRoutes);
 app.use("/api/v1/admin/products", adminProductRoutes);
+app.use("/api/v1/checkout-payment", paymentRoutes);
 // Global Error Handler
 
 app.use(globalErrorHandler);

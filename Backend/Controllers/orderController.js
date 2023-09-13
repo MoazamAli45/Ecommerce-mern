@@ -38,8 +38,9 @@ exports.findOrderById = catchAsync(async (req, res) => {
 exports.orderHistory = catchAsync(async (req, res) => {
   try {
     const user = req.user;
-    const orders = await OrderService.orderHistory(user._id);
-
+    // console.log("History");
+    const orders = await OrderService.userOrderHistory(user._id);
+    // console.log(orders);
     res.status(200).json({
       status: "success",
       data: {

@@ -1,3 +1,4 @@
+import logo from "/logo.png";
 const footerData = [
   {
     id: 1,
@@ -145,7 +146,7 @@ const Footer = () => {
                   className="w-full  bg-transparent rounded border border-gray-300 focus:bg-transparent focus:ring-2 focus:ring-blue-200 focus:border-blue-500 text-base outline-none text-white py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                 />
               </div>
-              <button className="lg:mt-2 xl:mt-0 flex-shrink-0 inline-flex text-white bg-primary border-0 py-2 px-6 focus:outline-none hover:bg-teal-50 hover:text-[#111827] rounded">
+              <button className="lg:mt-2 xl:mt-0 flex-shrink-0 inline-flex text-white bg-primary border-0 py-2 px-6 focus:outline-none hover:bg-primary hover:text-[#111827] rounded">
                 Button
               </button>
             </div>
@@ -160,26 +161,15 @@ const Footer = () => {
       <div className="bg-[#111827]">
         <div className="container px-5 py-6 mx-auto flex items-center sm:flex-row flex-col">
           <a className="flex title-font font-medium items-center md:justify-start justify-center text-white">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="w-10 h-10 text-white p-2 bg-blue-500 rounded-full"
-              viewBox="0 0 24 24"
-            >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-            </svg>
+            <img src={logo} alt="logo" className="w-10 h-10 rounded-full" />
             <span className="ml-3 text-xl">Ecommerce Store</span>
           </a>
           <p className="text-sm text-teal-50 sm:ml-6 sm:mt-0 mt-4">
             © {new Date().getFullYear()} Syed Moazam Ali.
             <a
-              href="https://twitter.com/knyttneve"
+              href="https://syedmoazamali.netlify.app/"
               rel="noopener noreferrer"
-              className="text-teal-50 ml-1"
+              className="text-teal-50 ml-1 hover:decoration-style"
               target="_blank"
             >
               @SyedMoazamAli

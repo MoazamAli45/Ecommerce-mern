@@ -6,7 +6,7 @@ exports.updateCartItem = catchAsync(async (req, res) => {
   const user = req.user;
   const { productId } = req.params;
 
-  console.log("Form " + req.body);
+  // console.log("Form " + req.body);
   try {
     const cartItem = await CartItemService.updateCartItem(
       user._id,

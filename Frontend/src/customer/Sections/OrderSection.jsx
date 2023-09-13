@@ -7,12 +7,14 @@ import { getCart } from "../../../store/cartReducer";
 import Loading from "./../components/Loading/Loading";
 import { ToastContainer, toast } from "react-toastify";
 import EmptyCart from "../components/EmptyCart/EmptyCart";
-
-const CartSection = (props) => {
-  const navigate = useNavigate();
+import StripeCheckoutButton from "../components/StripeCheckoutButton/StripeCheckoutButton";
+const OrderSection = () => {
   const dispatch = useDispatch();
   // const history = useHistory();
   const { cart, isLoading, error } = useSelector((state) => state.cart);
+
+  const searchParams = new URLSearchParams(window.location.search);
+  const orderId = searchParams.get("order_id");
 
   // console.log(cart);
   //  fetching data
@@ -26,14 +28,24 @@ const CartSection = (props) => {
     };
   }, [dispatch]);
 
-  let navigateTo = "/checkout?step=2";
+  //    FOR REACT STRIPE CHECKOUT YOU CNA CHECK THIS ONE
+  // const paymentHandler = async (token) => {
+  //   try {
+  //     const searchParams = new URLSearchParams(window.location.search);
+  //     const orderId = searchParams.get("order_id");
+  //     // console.log(token);
 
-  const navigateHandler = () => {
-    if (cart?.cart?.cartItems?.length !== 0) {
-      navigate(navigateTo);
-    }
-    toast.error("Cart is empty!");
-  };
+  //     const session = await api.post(`/api/v1/payments/${orderId}`, token);
+  //     // console.log(session);
+  //     const successUrl = session.data.session.success_url;
+  //     if (successUrl) {
+  //       navigate("/account/order");
+  //     }
+  //     // window.location.assign(successUrl);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   if (isLoading) {
     return (
@@ -91,7 +103,12 @@ const CartSection = (props) => {
               0}
           </h5>
         </div>
-        {!props.navigate && (
+
+        {/* <StripeCheckout
+          stripeKey={import.meta.env.VITE_REACT_APP_STRIPE_PUBLICKEY}
+          token={paymentHandler}
+          name="Al Syed Ecommerce"
+        >
           <Button
             variant="contained"
             sx={{
@@ -102,14 +119,15 @@ const CartSection = (props) => {
                 backgroundColor: "#9155FE",
               },
             }}
-            onClick={navigateHandler}
           >
-            Checkout
+            Order Payment
           </Button>
-        )}
+        </StripeCheckout> */}
+
+        <StripeCheckoutButton id={orderId} />
       </div>
     </section>
   );
 };
 
-export default CartSection;
+export default OrderSection;

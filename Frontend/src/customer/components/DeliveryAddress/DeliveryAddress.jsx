@@ -7,6 +7,7 @@ import { createOrder, reset } from "../../../../store/orderReducer";
 import { useNavigate } from "react-router-dom";
 import Loading from "../Loading/Loading";
 import { toast, ToastContainer } from "react-toastify";
+import Spinner from "./../Spinner/Spinner";
 const DeliveryAddress = (props) => {
   // For Empty the form
   const firstNameRef = useRef();
@@ -112,18 +113,10 @@ const DeliveryAddress = (props) => {
     postalCodeRef.current.value = "";
     mobileNumberRef.current.value = "";
   };
-  console.log("Order check", order);
+  // console.log("Order check", order);
   if (error) {
-    console.log("error", error);
-    toast.error(error.message);
-  }
-
-  if (isLoading) {
-    return (
-      <div className="flex justify-center align-center h-[90vh]">
-        <Loading />
-      </div>
-    );
+    // console.log("error", error);
+    toast.error(error);
   }
 
   return (
@@ -225,7 +218,12 @@ const DeliveryAddress = (props) => {
           }}
           // onClick={navigateHandler}
         >
-          Deliver Here
+          {isLoading && (
+            <span className="flex gap-2">
+              <Spinner /> Submitting...
+            </span>
+          )}
+          {!isLoading && "Deliver Here"}
         </Button>
       </form>
     </div>

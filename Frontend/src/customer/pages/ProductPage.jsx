@@ -281,7 +281,7 @@ export default function ProductPage() {
   ]);
 
   if (error) {
-    toast.error(error.message);
+    toast.error(error);
   }
 
   if (isLoading) {

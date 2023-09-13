@@ -4,7 +4,6 @@ const AppError = require("../utils/appError");
 
 exports.createProduct = catchAsync(async (req, res) => {
   try {
-    console.log("coming");
     const product = await productService.createProduct(req.body);
     res.status(200).json({
       status: "success",
@@ -70,7 +69,7 @@ exports.getAllProducts = catchAsync(async (req, res) => {
   try {
     // console.log(req.query);
     let products = await productService.getProductsAll(req.query);
-    console.log(products);
+    // console.log(products);
     res.status(200).json({
       status: "success",
       data: {

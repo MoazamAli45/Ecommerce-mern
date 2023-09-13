@@ -56,7 +56,7 @@ exports.login = catchAsync(async (req, res) => {
   }
 
   const user = await User.findOne({ email }).select("+password");
-  console.log("From Login ", user);
+  // console.log("From Login ", user);
   if (!user || !(await user.correctPassword(password, user.password))) {
     throw new AppError("Incorrect email or password", 401);
   }
@@ -95,11 +95,11 @@ exports.protect = catchAsync(async (req, res, next) => {
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
   // console.log("DECODED" + decoded);
   const currentUser = await User.findById(decoded.id);
-
+  // console.log(currentUser);
   if (!currentUser) {
     throw new AppError("The user belonging to this token does not exist");
   }
-  console.log(currentUser);
+
   req.user = currentUser;
 
   // to be available in frontend

@@ -83,7 +83,7 @@ export const getUser = createAsyncThunk(
         // Return a specific value to indicate that the JWT is not present
         return null;
       }
-
+      // console.log(jwt);
       const response = await fetch(`${API_URL}/api/v1/users/profile`, {
         method: "GET",
         headers: {

@@ -41,16 +41,13 @@ export const getOrderById = createAsyncThunk(
 
 export const getOrderHistory = createAsyncThunk(
   "order/orderHistory",
-  async (data, thunkAPI) => {
+  async (_, thunkAPI) => {
     try {
-      const data = await api.get(`/api/v1/orders/orderhistory`);
-      const order = await data.json();
-      if (order.status === "fail" || order.status === "error") {
-        throw new Error(order.message);
-      }
-      return order;
+      const order = await api.get(`/api/v1/orders/account/userOrderHistory`);
+      // console.log(order.data.data);
+      return order.data.data.orders;
     } catch (err) {
-      return thunkAPI.rejectWithValue(err);
+      return thunkAPI.rejectWithValue(err.response.data.message);
     }
   }
 );

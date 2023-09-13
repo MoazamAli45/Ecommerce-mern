@@ -21,7 +21,7 @@ exports.addItemToCart = catchAsync(async (req, res) => {
   const user = req.user;
   try {
     const cart = await CartService.addItemCart(user._id, req.body);
-    console.log("controller" + cart);
+    // console.log("controller" + cart);
     res.status(200).json({
       status: "success",
       data: {

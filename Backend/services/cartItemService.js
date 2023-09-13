@@ -14,7 +14,7 @@ exports.updateCartItem = async (userId, cartItemId, data) => {
     if (!user) {
       throw new Error("User not found");
     }
-    console.log("item" + data.quantity);
+    // console.log("item" + data.quantity);
 
     if (user._id.toString() === item.userId.toString()) {
       if (data.sign === "+") {
@@ -31,7 +31,7 @@ exports.updateCartItem = async (userId, cartItemId, data) => {
 
       const updatedItem = await item.save();
 
-      console.log("updatedItem" + updatedItem);
+      // console.log("updatedItem" + updatedItem);
       return updatedItem;
     } else {
       // Our generated Error
@@ -60,7 +60,7 @@ exports.removeCartItem = async (userId, cartItemId) => {
 
     if (user._id.toString() === item.userId.toString()) {
       await item.remove();
-      console.log(item);
+      // console.log(item);
       return item;
     } else {
       // Our generated Error

@@ -71,6 +71,7 @@ const productSchema = new mongoose.Schema({
     default: Date.now(),
   },
 });
+productSchema.index({ price: 1 });
 
 const Product = mongoose.model("products", productSchema);
 

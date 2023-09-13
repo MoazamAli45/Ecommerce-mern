@@ -32,8 +32,9 @@ const Orders = () => {
 
   useEffect(() => {
     if (deleted) {
+      console.log("Deleted from effecct", deleted);
       Swal.fire("Success", "Order Deleted Successfully", "success");
-      reset();
+      dispatch(reset());
     }
 
     dispatch(getAllOrders());
@@ -229,8 +230,14 @@ const Orders = () => {
                           },
                         }}
                       >
-                        <span className="bg-red-600 rounded-2xl px-5 py-3 text-white">
-                          {row.orderStatus}{" "}
+                        <span
+                          className={`${
+                            row.orderStatus === "Pending"
+                              ? "bg-red-500"
+                              : "bg-green-500"
+                          } rounded-3xl px-5 py-3 text-white`}
+                        >
+                          {row.orderStatus}
                         </span>
                       </TableCell>
 

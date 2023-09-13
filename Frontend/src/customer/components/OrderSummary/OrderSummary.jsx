@@ -1,5 +1,5 @@
 import DeliveryAddressCard from "./../DeliveryAddress/DeliveryAddressCard";
-import CartSection from "./../../Sections/CartSection";
+import OrderSection from "./../../Sections/OrderSection";
 import { useSelector, useDispatch } from "react-redux";
 import Loading from "../Loading/Loading";
 import { toast, ToastContainer } from "react-toastify";
@@ -50,7 +50,7 @@ const OrderSummary = () => {
           key={order?._id}
         />
       )}
-      <CartSection navigate={"/"} />
+      <OrderSection />
     </>
   );
 };

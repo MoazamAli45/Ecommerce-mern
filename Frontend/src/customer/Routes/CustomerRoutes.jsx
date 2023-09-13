@@ -4,11 +4,12 @@ import ProductPage from "./../pages/ProductPage";
 import CartPage from "./../pages/CartPage";
 import ProductDetailPage from "./../pages/ProductDetailPage";
 import CheckoutPage from "./../pages/CheckoutPage";
-import OrderPage from "./../pages/OrderPage";
+import OrderHistoryPage from "./../pages/OrderHistoryPage";
 import OrderSummaryPage from "./../pages/OrderSummaryPage";
 import LoginPage from "./../pages/LoginPage";
 import SignupPage from "./../pages/SignupPage";
 import Layout from "../components/Layout/Layout";
+import CheckoutSuccessPage from "../pages/CheckoutSuccessPage";
 import ProtectedRoutes from "./ProtectedRoutes";
 const CustomerRoutes = () => {
   return (
@@ -31,11 +32,14 @@ const CustomerRoutes = () => {
 
           <Route path="/checkout" element={<CheckoutPage />} />
           {/*    For User Account  */}
-          <Route path="/account/order" element={<OrderPage />} />
+          <Route path="/account/order" element={<OrderHistoryPage />} />
+          <Route path="/checkout-success" element={<CheckoutSuccessPage />} />
+          {/* 
+        
           <Route
             path="/account/order/:orderId"
             element={<OrderSummaryPage />}
-          />
+          /> */}
         </Route>
       </Routes>
     </Layout>

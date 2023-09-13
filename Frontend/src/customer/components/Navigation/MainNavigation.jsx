@@ -14,7 +14,7 @@ import logo from "/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getUser, logout } from "../../../../store/authReducer";
-
+import { getCart } from "../../../../store/cartReducer";
 const navigation = {
   categories: [
     {
@@ -166,6 +166,7 @@ export default function MainNavigation() {
     if (jwt !== "undefined" || !jwt) {
       // if (isAuth) {
       dispatch(getUser(jwt));
+      dispatch(getCart());
     }
     // }
   }, [dispatch]);
@@ -586,7 +587,6 @@ export default function MainNavigation() {
                       horizontal: "left",
                     }}
                   >
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
                     <MenuItem onClick={navigateHandler}>My account</MenuItem>
                     <MenuItem onClick={handleLogout}>Logout</MenuItem>
                   </Menu>

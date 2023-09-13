@@ -36,7 +36,7 @@ exports.findUserCartById = async (userId) => {
 
     // Counting for cartItems
     for (let cartItem of cart.cartItems) {
-      console.log(cartItem.discountPrice);
+      // console.log(cartItem.discountPrice);
       totalPrice += cartItem.totalPrice;
       totalDiscountedPrice += cartItem.totalDiscountPrice;
       totalItems += cartItem.quantity;

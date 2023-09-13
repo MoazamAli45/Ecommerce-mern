@@ -45,7 +45,7 @@ export const getProductById = createAsyncThunk(
     try {
       const product = await api.get(`/api/v1/products/${id}`);
 
-      console.log(product.data.data);
+      // console.log(product.data.data);
       return product.data.data;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response.data.message);
@@ -57,9 +57,9 @@ export const deleteProduct = createAsyncThunk(
   "product/delete",
   async (id, thunkAPI) => {
     try {
-      console.log(id);
+      // console.log(id);
       const product = await api.delete(`/api/v1/admin/products/${id}`);
-      console.log(product.data.data);
+      // console.log(product.data.data);
       return product.data.data;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response.data.message);

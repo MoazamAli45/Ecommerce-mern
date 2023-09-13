@@ -5,7 +5,7 @@ const OrderItem = require("../Model/orderItemModel");
 const Order = require("../Model/orderModel");
 // Create Order
 exports.createOrder = async (userId, shipAddress) => {
-  console.log(shipAddress);
+  // console.log(shipAddress);
   try {
     let address;
     // if already present Address
@@ -147,14 +147,14 @@ exports.cancelOrder = async (orderId) => {
 
 exports.userOrderHistory = async (userId) => {
   try {
+    // console.log("userHistory");
     const order = await Order.find({
       user: userId,
-      orderStatus: "PLACED",
     })
       .populate({
         path: "orderItems",
         populate: {
-          path: "products",
+          path: "product",
         },
       })
       // lean()  This method call converts the query results into plain JavaScript objects rather than Mongoose documents. This can improve performance and reduce memory consumption, especially when you don't need the full functionality of Mongoose objects.
@@ -162,6 +162,7 @@ exports.userOrderHistory = async (userId) => {
 
     return order;
   } catch (err) {
+    console.log(error);
     throw new Error(err.message);
   }
 };
@@ -199,6 +200,7 @@ const findOrderById = async (orderId) => {
 };
 exports.getOrderById = async (orderId) => {
   try {
+    // console.log(orderId);
     const order = await Order.findById(orderId)
       .populate("user")
       //    in order Items also product

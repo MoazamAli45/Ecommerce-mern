@@ -42,7 +42,7 @@ const createProduct = async (reqData) => {
       description: reqData.description,
       price: reqData.price,
       discountPrice: reqData.discountPrice,
-      discountPercentage: reqData.discountPercentage,
+      discountPercent: +reqData.discountPercent,
       sizes: reqData.sizes,
       brand: reqData.brand,
       color: reqData.color,
@@ -59,9 +59,9 @@ const createProduct = async (reqData) => {
 };
 
 const deleteProduct = async (productId) => {
-  console.log(productId);
+  // console.log(productId);
   const product = await Product.findByIdAndDelete(productId);
-  console.log(product);
+  // console.log(product);
   if (!product) {
     throw new Error("Product not found");
   }
@@ -130,7 +130,7 @@ const getProductsAll = async (reqQuery) => {
 
     // //   minprice and maxPrice
     if (minPrice && maxPrice) {
-      console.log(minPrice);
+      // console.log(minPrice);
       query = query.find({ price: { $gte: minPrice, $lte: maxPrice } });
       // query = query.where("price").gte(+minPrice).lte(+maxPrice);
     }
@@ -172,13 +172,13 @@ const getProductsAll = async (reqQuery) => {
     // // skip
     // // on 1 page  0-10
     const skip = +pageNumber * +pageSize;
-    console.log("Skip" + skip);
+    // console.log("Skip" + skip);
     // // if (skip < 0) skip = 5;
     query = query.skip(skip).limit(+pageSize);
 
     // // Now executing query at last
     const products = await query.exec();
-    console.log(products);
+    // console.log(products);
     const totalPages = Math.ceil(totalProducts / +pageSize);
 
     return {
@@ -202,7 +202,7 @@ const findProductById = async (productId) => {
 //     For Uploading Multiple Products  at start
 const createMultipleProduct = async (products) => {
   for (product of products) {
-    console.log(product);
+    // console.log(product);
     await createProduct(product);
   }
 };

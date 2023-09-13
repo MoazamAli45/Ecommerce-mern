@@ -1,6 +1,6 @@
 import DeliveryAddressCard from "../components/DeliveryAddress/DeliveryAddressCard";
 import { Stepper, StepLabel, Step } from "@mui/material";
-import OrderSummaryCard from "./../components/OrderSummaryCard/OrderSummaryCard";
+import OrderSummaryCard from "../components/OrderSummaryCard/OrderSummaryCard";
 
 const steps = [
   "Placed",

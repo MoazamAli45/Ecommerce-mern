@@ -62,7 +62,7 @@ import { addToCart, getCart } from "../../../store/cartReducer";
 //   details:
 //     'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
 // };
-const reviews = { href: "#", average: 4, totalCount: 117 };
+const reviews = { href: "#", average: 4, totalCount: 1 };
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -102,7 +102,7 @@ export default function ProductDetailPage() {
   };
 
   if (error) {
-    toast.error(error.message);
+    toast.error(error);
   }
 
   if (isLoading) {
@@ -342,7 +342,7 @@ export default function ProductDetailPage() {
           </h2>
           <div className="shadow-lg flex  flex-col flex-wrap md:flex-row justify-between my-5 p-7 gap-y-10">
             <div className="flex flex-col gap-3">
-              {[1, 1, 1, 1].map((el, i) => (
+              {[1].map((el, i) => (
                 <ProductReviewCard key={i} />
               ))}
             </div>
@@ -352,7 +352,7 @@ export default function ProductDetailPage() {
               </h4>
               <div className="flex  gap-3">
                 <Rating readOnly value={4} />
-                <p className="opacity-60 font-semibold">5466 Ratings</p>
+                <p className="opacity-60 font-semibold">1 Rating</p>
               </div>
               <div className="flex items-center gap-2">
                 <p className="basis-[100px]">Excellent</p>

@@ -98,7 +98,6 @@ export default function CheckoutPage() {
           {step == 2 && <DeliveryAddress onNavigate={navigateStepHandler} />}
           {step == 3 && <OrderSummary />}
         </React.Fragment>
-        )
       </Box>
     </div>
   );

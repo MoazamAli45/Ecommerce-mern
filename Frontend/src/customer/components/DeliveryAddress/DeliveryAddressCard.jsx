@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 const DeliveryAddressCard = (props) => {
-  console.log(props.firstName, "Form Card");
+  
   let classBtn;
   if (props.classNameBtn) {
     classBtn = props.classNameBtn;
