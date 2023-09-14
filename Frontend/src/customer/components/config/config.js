@@ -1,6 +1,6 @@
 import axios from "axios";
-export const API_URL = "http://localhost:8000";
-
+export const API_URL = "https://ecommerce-mern-api-beta.vercel.app/";
+// http://localhost:8000
 //   As for fetching data from backend we need to send token
 const jwt = localStorage.getItem("jwt");
 // console.log(jwt);
