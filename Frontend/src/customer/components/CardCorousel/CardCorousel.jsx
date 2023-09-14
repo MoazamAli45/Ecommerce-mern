@@ -5,7 +5,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ".././../../App.css";
 
-import { mensKurta } from "../../Data/mensKurta";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ShopCard from "../ShopCard/ShopCard";
@@ -84,7 +83,7 @@ const CardCorousel = (props) => {
         {...settings}
         data-aos="fade-up"
         ref={sliderRef}
-        className="h-full "
+        className="h-full  flex gap-2"
       >
         {data.map((item, index) => {
           return (
