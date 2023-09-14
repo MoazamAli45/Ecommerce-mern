@@ -56,8 +56,15 @@ export const getOrderHistory = createAsyncThunk(
 export const getAllOrders = createAsyncThunk(
   "order/getAllOrders",
   async (_, thunkAPI) => {
+    const jwt = localStorage.getItem("jwt");
+
     try {
-      const orders = await api.get(`/api/v1/admin/orders`);
+      const orders = await api.get(`/api/v1/admin/orders`, {
+        headers: {
+          Authorization: jwt ? `Bearer ${jwt}` : "",
+          "Content-Type": "application/json",
+        },
+      });
       // console.log(orders.data);
       return orders.data.data.orders;
     } catch (err) {

@@ -75,7 +75,7 @@ export const registerUser = createAsyncThunk(
 export const getUser = createAsyncThunk(
   "auth/getUser",
   async (jwt, thunkAPI) => {
-    // console.log(jwt);
+    // console.log("From get" + jwt);
     // const token = JSON.parse(jwt);
     try {
       if (!jwt) {

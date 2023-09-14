@@ -41,6 +41,11 @@ const OrderHistoryPage = () => {
             orders={item}
           />
         ))}
+        {orders?.length === 0 && (
+          <h1 className="text-gray-500 text-2xl font-bold text-center">
+            No Orders Found
+          </h1>
+        )}
       </div>
     </div>
   );

@@ -12,7 +12,7 @@ export const addToCart = createAsyncThunk(
   "cart/addToCart",
   async (data, thunkAPI) => {
     try {
-      console.log(data);
+      // console.log(data);
       const cart = await api.post(`/api/v1/carts`, data);
 
       // console.log("Successfully", cart.data.data.cart.cartItems);

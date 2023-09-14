@@ -19,6 +19,7 @@ import { Box, Button, AvatarGroup } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 
 import { getAllOrders } from "../../../../store/orderReducer";
+import { getUser } from "../../../../store/authReducer";
 //  for getting data
 
 import { useDispatch, useSelector } from "react-redux";
@@ -32,7 +33,7 @@ const Orders = () => {
 
   useEffect(() => {
     if (deleted) {
-      console.log("Deleted from effecct", deleted);
+      console.log("Deleted from effect", deleted);
       Swal.fire("Success", "Order Deleted Successfully", "success");
       dispatch(reset());
     }

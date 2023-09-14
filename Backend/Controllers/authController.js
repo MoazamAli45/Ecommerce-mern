@@ -60,7 +60,7 @@ exports.login = catchAsync(async (req, res) => {
   if (!user || !(await user.correctPassword(password, user.password))) {
     throw new AppError("Incorrect email or password", 401);
   }
-
+  console.log("From Login ", user);
   createdSendToken(user, 200, res);
 });
 
@@ -78,12 +78,13 @@ exports.protect = catchAsync(async (req, res, next) => {
     // console.log(typeof req.headers.authorization);
     //   For Frontend
     token = JSON.parse(req.headers.authorization.split(" ")[1]);
+
     // FOR BACKEND
     // token = req.headers.authorization.split(" ")[1];
     // console.log("Check" + token);
   }
   // now getting from cookies as in original web page
-
+  // console.log(token);
   // console.log("CHEKCED" + token);
   if (!token) {
     console.log("You are not logged in");
@@ -93,7 +94,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   // Decoding Token
   // console.log(token);
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-  // console.log("DECODED" + decoded);
+  console.log("DECODED" + decoded.id);
   const currentUser = await User.findById(decoded.id);
   // console.log(currentUser);
   if (!currentUser) {
@@ -101,7 +102,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 
   req.user = currentUser;
-
+  // console.log(currentUser);
   // to be available in frontend
   res.locals.user = currentUser;
   next();

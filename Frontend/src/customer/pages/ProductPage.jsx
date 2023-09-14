@@ -300,7 +300,7 @@ export default function ProductPage() {
           Filters
         </h3>
         <form className="hidden lg:block">
-          {console.log(filters)}
+          {/* {console.log(filters)} */}
           {filters.map((section) => (
             <Disclosure
               as="div"
