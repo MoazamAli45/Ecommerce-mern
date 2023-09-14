@@ -4,7 +4,9 @@ const dotenv = require("dotenv");
 
 dotenv.config({ path: "./config.env" });
 
-const DB = process.env.DATABASE;
+// const DB = process.env.DATABASE;
+const DB =
+  "mongodb+srv://moazamali:gekNTxispBRebAHT@cluster0.kfm1qmn.mongodb.net/?retryWrites=true&w=majority";
 mongoose
   .connect(DB, {
     useNewUrlParser: true,
@@ -16,6 +18,7 @@ mongoose
     console.log("DB connection successful!");
   })
   .catch((err) => {
+    console.log("DB CONNECTION ERROR!");
     console.log(err);
   });
 const PORT = process.env.PORT || 8000;
