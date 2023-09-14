@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 
 import CssBaseline from "@mui/material/CssBaseline";
 import MiniDrawer from "./MiniDrawer";
-import "./layout.css";
+import "./Layout.css";
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
