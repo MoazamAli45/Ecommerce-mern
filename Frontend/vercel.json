@@ -1,47 +1,23 @@
 {
   "version": 2,
-  "name": "native-server",
-  "builds": [{ "src": "app..js", "use": "@vercel/node" }],
+  "builds": [
+    {
+      "src": "vite.config.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "build/**",
+      "use": "@vercel/static"
+    }
+  ],
   "routes": [
     {
-      "src": "/",
-      "dest": "/"
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
     },
     {
-      "src": "/login",
-      "dest": "/"
-    },
-    {
-      "src": "/signup",
-      "dest": "/"
-    },
-    {
-      "src": "/login",
-      "dest": "/"
-    },
-    {
-      "src": "/cart",
-      "dest": "/"
-    },
-    {
-      "src": "/checkout",
-      "dest": "/"
-    },
-    {
-      "src": "/account/order",
-      "dest": "/"
-    },
-    {
-      "src": "/checkout-success",
-      "dest": "/"
-    },
-    {
-      "src": "/products",
-      "dest": "/"
-    },
-    {
-      "src": "/add-product",
-      "dest": "/"
+      "src": "/(.*)",
+      "dest": "/$1"
     }
   ]
 }
