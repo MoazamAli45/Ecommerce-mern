@@ -15,6 +15,11 @@
   height: auto;
 }
 
+@media (max-width: 576px) {
+  .not-logged-image {
+    max-width: 400px;
+  }
+}
 .not-logged-title {
   font-size: 24px;
   color: #333;
