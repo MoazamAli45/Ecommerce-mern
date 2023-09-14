@@ -11,7 +11,7 @@ import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import DashboardAccordion from "../DashboardAccordian/DashbaordAccordian";
 import { BarChart } from "../BarChart/BarChart";
 import Countup from "react-countup";
-import "./hero.css";
+import "./Hero.css";
 
 const Hero = () => {
   return (
