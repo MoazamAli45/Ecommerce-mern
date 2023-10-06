@@ -158,12 +158,13 @@ export default function MainNavigation() {
   const dispatch = useDispatch();
   //   For getting value from store
   const { isAuth, user } = useSelector((state) => state.auth);
+  // console.log(user);
   const { cart } = useSelector((state) => state.cart);
   // //   Gettign User Profile
   useEffect(() => {
     const jwt = localStorage.getItem("jwt");
     // console.log(jwt);
-    if (jwt !== "undefined" || !jwt) {
+    if (jwt !== "undefined") {
       // if (isAuth) {
       dispatch(getUser(jwt));
       dispatch(getCart());
