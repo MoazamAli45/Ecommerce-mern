@@ -1,6 +1,4 @@
-import { useNavigate } from "react-router-dom";
 import CheckoutCard from "../components/CheckoutCard/CheckoutCard";
-import { Button } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCart } from "../../../store/cartReducer";

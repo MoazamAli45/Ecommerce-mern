@@ -3,7 +3,6 @@ const Stripe = require("stripe");
 const dotenv = require("dotenv");
 dotenv.config({ path: "../config.env" });
 
-console.log(process.env.CLIENT_URL);
 const stripe = Stripe(
   "sk_test_51NpY69GSX0P2ssktcadDVo5jJ6DxPV3nmPM91CNwjAvfIsUa9PLeRCx8gASIa4kxlghH0hUPE2ZHsmcaWogvTQyg00r5xo4lqG"
   // process.env.STRIPE_SECRETKEY

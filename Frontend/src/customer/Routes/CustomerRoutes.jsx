@@ -5,7 +5,6 @@ import CartPage from "./../pages/CartPage";
 import ProductDetailPage from "./../pages/ProductDetailPage";
 import CheckoutPage from "./../pages/CheckoutPage";
 import OrderHistoryPage from "./../pages/OrderHistoryPage";
-import OrderSummaryPage from "./../pages/OrderSummaryPage";
 import LoginPage from "./../pages/LoginPage";
 import SignupPage from "./../pages/SignupPage";
 import Layout from "../components/Layout/Layout";

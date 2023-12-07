@@ -42,9 +42,9 @@ const CartSection = (props) => {
       </div>
     );
   }
-  if (error) {
-    toast.error(error);
-  }
+  // if (error) {
+  //   toast.error(error);
+  // }
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 my-4 w-[95%] mx-auto  gap-5">

@@ -4,39 +4,6 @@ const Product = require("../Model/productModel");
 //     Creating Product
 const createProduct = async (reqData) => {
   try {
-    // let topLevel = await Category.findOne({ name: reqData.topLevel });
-    // if (!topLevel) {
-    //   topLevel = new Category({
-    //     name: reqData.topLevel,
-    //     level: 1,
-    //   });
-    // }
-
-    // let secondLevel = await Category.findOne({
-    //   name: reqData.secondLevel,
-    //   parentCategory: topLevel._id,
-    // });
-
-    // if (!secondLevel) {
-    //   secondLevel = new Category({
-    //     name: reqData.secondLevel,
-    //     parentCategory: topLevel._id,
-    //     level: 2,
-    //   });
-    // }
-
-    // let thirdLevel = await Category.findOne({
-    //   name: reqData.thirdLevel,
-    //   parentCategory: secondLevel._id,
-    // });
-    // if (!thirdLevel) {
-    //   thirdLevel = new Category({
-    //     name: reqData.thirdLevel,
-    //     parentCategory: secondLevel._id,
-    //     level: 3,
-    //   });
-    // }
-
     const product = new Product({
       title: reqData.title,
       description: reqData.description,

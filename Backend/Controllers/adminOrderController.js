@@ -6,6 +6,9 @@ const AppError = require("../utils/appError");
 exports.getAllOrder = catchAsync(async (req, res) => {
   try {
     const orders = await OrderService.getAllOrders();
+    const sortedOrders = orders.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
     res.status(200).json({
       status: "success",
       data: {
