@@ -19,7 +19,6 @@ import { Box, Button, AvatarGroup } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 
 import { getAllOrders } from "../../../../store/orderReducer";
-import { getUser } from "../../../../store/authReducer";
 //  for getting data
 
 import { useDispatch, useSelector } from "react-redux";
@@ -40,7 +39,7 @@ const Orders = () => {
 
     dispatch(getAllOrders());
   }, [dispatch, deleted]);
-  // console.log(orders);
+  console.log("Orders", orders);
 
   if (error) {
     toast.error(error);
@@ -195,7 +194,7 @@ const Orders = () => {
                             <Avatar
                               key={item._id}
                               alt="Image"
-                              src={item.product[0].imageUrl}
+                              src={item?.product[0]?.imageUrl}
                             />
                           ))}
                         </AvatarGroup>
@@ -210,7 +209,7 @@ const Orders = () => {
                         }}
                       >
                         {row.orderItems.map((item) => {
-                          return item.product[0].title + " , ";
+                          return item?.product[0]?.title + " , ";
                         })}
                       </TableCell>
                       <TableCell
