@@ -3,7 +3,7 @@ const Stripe = require("stripe");
 const dotenv = require("dotenv");
 dotenv.config({ path: "../config.env" });
 
-// console.log(process.env);
+console.log(process.env.CLIENT_URL);
 const stripe = Stripe(
   "sk_test_51NpY69GSX0P2ssktcadDVo5jJ6DxPV3nmPM91CNwjAvfIsUa9PLeRCx8gASIa4kxlghH0hUPE2ZHsmcaWogvTQyg00r5xo4lqG"
   // process.env.STRIPE_SECRETKEY
@@ -33,6 +33,7 @@ exports.getCheckoutSession = async (req, res) => {
       payment_method_types: ["card"],
       // success_url: `${req.protocol}://localhost:5173/account/order`,
       success_url: `${process.env.CLIENT_URL}/checkout-success`,
+      // success_url: `http://localhost:5173/checkout-success`,
       cancel_url: `${req.protocol}://${req.get(
         "host"
       )}/checkout?step=3&order_id=${req.body.id}}`,
