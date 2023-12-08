@@ -239,11 +239,12 @@ const Orders = () => {
                           },
                         }}
                       >
-                        {row?.user[0]?.firstName[0].toUpperCase() +
-                          row?.user[0]?.firstName.slice(1) +
-                          " " +
-                          row?.user[0]?.lastName[0].toUpperCase() +
-                          row?.user[0]?.lastName.slice(1)}
+                        {row?.user &&
+                          row?.user[0]?.firstName[0].toUpperCase() +
+                            row?.user[0]?.firstName.slice(1) +
+                            " " +
+                            row?.user[0]?.lastName[0].toUpperCase() +
+                            row?.user[0]?.lastName.slice(1)}
                       </TableCell>
                       <TableCell
                         align={"left"}
