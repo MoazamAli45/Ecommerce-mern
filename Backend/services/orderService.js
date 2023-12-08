@@ -176,6 +176,7 @@ exports.getAllOrders = async () => {
           path: "product",
         },
       })
+      .populate("user")
       //  lean tells to return a js object rather than mongodb docuemnt
       .lean();
 

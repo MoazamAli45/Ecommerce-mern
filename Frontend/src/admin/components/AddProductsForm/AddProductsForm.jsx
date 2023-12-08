@@ -255,8 +255,16 @@ const AddProductsForm = () => {
               required
             >
               <MenuItem value={"dresses"}>Dresses</MenuItem>
+              <MenuItem value={"menJeans"}>Men Jeans</MenuItem>
               <MenuItem value={"menKurtas"}>Men Kurtas</MenuItem>
               <MenuItem value={"watches"}>Watches</MenuItem>
+              <MenuItem value={"tops"}>Tops</MenuItem>
+              <MenuItem value={"pants"}>Pants</MenuItem>
+              <MenuItem value={"sweaters"}>Sweaters</MenuItem>
+              <MenuItem value={"tShirts"}>T-Shirts</MenuItem>
+              <MenuItem value={"wallets"}>Wallets</MenuItem>
+              <MenuItem value={"bags"}>Bags</MenuItem>
+              <MenuItem value={"sunglasses"}>Sunglasses</MenuItem>
             </Select>
           </FormControl>
         </div>

@@ -16,8 +16,8 @@ import Skeleton from "@mui/material/Skeleton";
 import Avatar from "@mui/material/Avatar";
 import { Box, Button, AvatarGroup } from "@mui/material";
 
-import { ToastContainer, toast } from "react-toastify";
-
+import { ToastContainer } from "react-toastify";
+// import { toast } from "react-toastify";
 import { getAllOrders } from "../../../../store/orderReducer";
 //  for getting data
 
@@ -26,9 +26,8 @@ import Swal from "sweetalert2";
 import { deleteOrder, reset } from "./../../../../store/orderReducer";
 const Orders = () => {
   const dispatch = useDispatch();
-  const { isLoading, error, orders, deleted } = useSelector(
-    (state) => state.order
-  );
+  //  error is also taken from this
+  const { isLoading, orders, deleted } = useSelector((state) => state.order);
 
   useEffect(() => {
     if (deleted) {
@@ -39,11 +38,11 @@ const Orders = () => {
 
     dispatch(getAllOrders());
   }, [dispatch, deleted]);
-  console.log("Orders", orders);
+  // console.log("Orders", orders);
 
-  if (error) {
-    toast.error(error);
-  }
+  // if (error) {
+  //   toast.error(error);
+  // }
   const deleteOrderHandler = (id) => {
     dispatch(deleteOrder(id));
   };
@@ -147,6 +146,16 @@ const Orders = () => {
                   >
                     Price
                   </TableCell>
+                  <TableCell
+                    align={"left"}
+                    style={{
+                      minWidth: {
+                        md: "200px",
+                      },
+                    }}
+                  >
+                    Customer
+                  </TableCell>
 
                   <TableCell
                     align={"left"}
@@ -220,7 +229,21 @@ const Orders = () => {
                           },
                         }}
                       >
-                        {row.totalPrice}
+                        {row.totalPrice - row.totalDiscountPrice}
+                      </TableCell>
+                      <TableCell
+                        align={"left"}
+                        sx={{
+                          minWidth: {
+                            md: "200px",
+                          },
+                        }}
+                      >
+                        {row?.user[0]?.firstName[0].toUpperCase() +
+                          row?.user[0]?.firstName.slice(1) +
+                          " " +
+                          row?.user[0]?.lastName[0].toUpperCase() +
+                          row?.user[0]?.lastName.slice(1)}
                       </TableCell>
                       <TableCell
                         align={"left"}

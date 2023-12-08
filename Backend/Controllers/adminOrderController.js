@@ -9,10 +9,11 @@ exports.getAllOrder = catchAsync(async (req, res) => {
     const sortedOrders = orders.sort(
       (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
     );
+    console.log(sortedOrders);
     res.status(200).json({
       status: "success",
       data: {
-        orders,
+        orders: sortedOrders,
       },
     });
   } catch (err) {

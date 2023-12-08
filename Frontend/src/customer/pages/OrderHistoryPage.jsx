@@ -2,7 +2,7 @@ import OrderCard from "../components/OrderCard/OrderCard";
 import { getOrderHistory } from "../../../store/orderReducer";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import Loading from "./../components/Loading/Loading";
 const OrderHistoryPage = () => {
   const dispatch = useDispatch();
@@ -16,7 +16,8 @@ const OrderHistoryPage = () => {
   // console.log(orders);
 
   if (error) {
-    toast.error(error);
+    console.log(error);
+    // toast.error(error);
   }
   if (isLoading) {
     return (
