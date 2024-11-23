@@ -6,7 +6,7 @@ dotenv.config({ path: "./config.env" });
 
 // const DB = process.env.DATABASE;
 const DB =
-  "mongodb+srv://moazamali:gekNTxispBRebAHT@cluster0.kfm1qmn.mongodb.net/?retryWrites=true&w=majority";
+  "mongodb+srv://moazamali:DRaNDbXdVJHpHSf4@cluster0.kfm1qmn.mongodb.net/?retryWrites=true&w=majority";
 mongoose
   .connect(DB, {
     useNewUrlParser: true,
